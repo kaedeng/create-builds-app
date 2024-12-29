@@ -35,5 +35,5 @@ jobs:
         REPOSITORY: ${{secrets.ECR_REPO}}
         IMAGE_TAG: ${{ github.sha }}
       run: |
-        docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
-        docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+        docker-compose build
+        docker-compose push
