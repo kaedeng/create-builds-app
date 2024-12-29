@@ -17,6 +17,11 @@ jobs:
     steps:
     - name: Checkout Repo
       uses: actions/checkout@v4
+
+    - name: Install Docker Compose
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y docker-compose
     
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v4
