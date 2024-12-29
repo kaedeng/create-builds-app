@@ -22,6 +22,15 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y docker-compose
+
+    - name: Create .env File
+      run: |
+        echo "REGISTRY=${{ steps.login-ecr.outputs.registry }}" >> .env
+        echo "REPOSITORY=${{ secrets.ECR_REPO }}" >> .env
+        echo "IMAGE_TAG=${{ github.sha }}" >> .env
+        echo "PGADDR=${{ secrets.PG_ADDR }}" >> .env
+        echo "PGUSER=${{ secrets.PGUSER }}" >> .env
+        echo "PGPASS=${{ secrets.PGPASS }}" >> .env
     
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v4
