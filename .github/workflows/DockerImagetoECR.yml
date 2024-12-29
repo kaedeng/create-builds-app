@@ -47,6 +47,8 @@ jobs:
       run: |
         aws ecr describe-repositories --repository-names ${REPOSITORY}-backend || \
         aws ecr create-repository --repository-name ${REPOSITORY}-backend
+        aws ecr describe-repositories --repository-names ${REPOSITORY}-frontend || \
+        aws ecr create-repository --repository-name ${REPOSITORY}-frontend
       env:
         AWS_REGION: us-west-2
         REPOSITORY: ${{ secrets.ECR_REPO }}
