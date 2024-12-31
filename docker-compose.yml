@@ -17,13 +17,17 @@ services:
       - .env
     networks:
       - app-network
+    image: "${REGISTRY}/${REPOSITORY}-backend:${IMAGE_TAG}"
   frontend:
     build:
       context: ./frontend
     ports:
       - "3000:3000"
+    env_file:
+      - .env
     networks:
       - app-network
+    image: "${REGISTRY}/${REPOSITORY}-frontend:${IMAGE_TAG}"
 
 networks:
   app-network:

@@ -1,0 +1,64 @@
+name: Push Docker Image to ECR
+
+permissions:
+  id-token: write
+  contents: read
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repo
+      uses: actions/checkout@v4
+
+    - name: Install Docker Compose
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y docker-compose
+
+    - name: Create .env File
+      run: |
+        echo "REGISTRY=${{ steps.login-ecr.outputs.registry }}" >> .env
+        echo "REPOSITORY=${{ secrets.ECR_REPO }}" >> .env
+        echo "IMAGE_TAG=${{ github.sha }}" >> .env
+        echo "PGADDR=${{ secrets.PG_ADDR }}" >> .env
+        echo "PGUSER=${{ secrets.PGUSER }}" >> .env
+        echo "PGPASS=${{ secrets.PGPASS }}" >> .env
+    
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+          role-to-assume: arn:aws:iam::443370705000:role/GH-ActionsRole
+          role-session-name: DockerImgtoECR
+          aws-region: us-west-2
+
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v2
+
+    - name: Ensure ECR Repository Exists
+      run: |
+        aws ecr describe-repositories --repository-names ${REPOSITORY}-backend || \
+        aws ecr create-repository --repository-name ${REPOSITORY}-backend
+        aws ecr describe-repositories --repository-names ${REPOSITORY}-frontend || \
+        aws ecr create-repository --repository-name ${REPOSITORY}-frontend
+      env:
+        AWS_REGION: us-west-2
+        REPOSITORY: ${{ secrets.ECR_REPO }}
+
+
+    - name: Build, tag, and push docker image to Amazon ECR
+      env:
+        REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        REPOSITORY: ${{ secrets.ECR_REPO }}
+        IMAGE_TAG: ${{ github.sha }}
+      run: |
+        docker-compose build
+        docker-compose push
