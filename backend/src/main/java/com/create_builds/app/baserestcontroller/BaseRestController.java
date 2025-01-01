@@ -43,15 +43,6 @@ public abstract class BaseRestController<T, ID, R extends CrudRepository<T, ID>,
     }
 
     // Below is HTTP responses for error/success handling. Expand if needed.
-    
-    @GetMapping
-    public ResponseEntity<List<T>> fetchAll() {
-        List<T> entities = getAll();
-        if (entities.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(entities);
-    }
 
     @GetMapping("/{id}")
     public ResponseEntity<T> fetchById(@PathVariable ID id) {
