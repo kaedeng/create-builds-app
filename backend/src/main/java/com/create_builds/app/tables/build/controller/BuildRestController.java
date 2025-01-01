@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "https://createbuildsmc.com/")
+@CrossOrigin(origins = "https://createbuildsmc.com")
 public class BuildRestController {
 	@Autowired
 	BuildRepoService modelrepo;

@@ -12,7 +12,7 @@ import com.create_builds.app.tables.user.modelservice.UserRepoService;
 
 @RestController
 @RequestMapping("/api/profile")
-@CrossOrigin(origins = "https://createbuildsmc.com/")
+@CrossOrigin(origins = "https://createbuildsmc.com")
 public class UserRestController {
 
     @Autowired

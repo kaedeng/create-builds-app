@@ -13,7 +13,7 @@ import com.create_builds.app.tables.comment.repo.CommentModelRepo;
 
 @RestController
 @RequestMapping("/api/builds/{buildId}/comments")
-@CrossOrigin(origins = "https://createbuildsmc.com/")
+@CrossOrigin(origins = "https://createbuildsmc.com")
 public class CommentRestController extends BaseRestController<
 	CommentModel, 
 	Integer, 
