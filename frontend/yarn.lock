@@ -6873,6 +6873,7 @@ __metadata:
     eslint-plugin-prettier: "npm:^5.2.1"
     eslint-plugin-react: "npm:^7.37.3"
     eslint-plugin-react-hooks: "npm:^5.1.0"
+    gapi-script: "npm:^1.2.0"
     prettier: "npm:^3.4.2"
     react: "npm:^19.0.0"
     react-bootstrap: "npm:^2.10.7"
@@ -6973,6 +6974,13 @@ __metadata:
   version: 1.2.3
   resolution: "functions-have-names@npm:1.2.3"
   checksum: 10c0/33e77fd29bddc2d9bb78ab3eb854c165909201f88c75faa8272e35899e2d35a8a642a15e7420ef945e1f64a9670d6aa3ec744106b2aa42be68ca5114025954ca
+  languageName: node
+  linkType: hard
+
+"gapi-script@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "gapi-script@npm:1.2.0"
+  checksum: 10c0/8b809c9d5cc54170ecf3eb461319ea3e3ef1355cf781d112fbe0270e2a9ce2c93372c71629bbd7b3b16659965f1b3b5b0994155c1777a13e731b20cbb78991d3
   languageName: node
   linkType: hard
 
