@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const axiosInstance = axios.create({
-  baseURL: 'createbuildsmc.com/api',
+  baseURL: 'https://createbuildsmc.com/api',
   timeout: 5000,
   withCredentials: true,
   headers: {
