@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const axiosInstance = axios.create({
-  baseURL: 'https://createbuildsmc.com/api',
+  baseURL: 'cba-backend-lb-1990243648.us-west-2.elb.amazonaws.com/api',
   timeout: 5000,
   withCredentials: true,
   headers: {
