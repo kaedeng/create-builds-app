@@ -9,8 +9,7 @@ const clientId =
 const LoginButton = () => {
   const handleCallbackResponse = async (response: any) => {
     const idToken: string = response.credential;
-    const result = loginUser(idToken);
-    console.log('Login successful:', result);
+    loginUser(idToken);
   };
 
   useEffect(() => {
