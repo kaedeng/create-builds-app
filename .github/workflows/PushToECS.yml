@@ -30,6 +30,20 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
+      - name: Get Runner IP address
+        id: ip
+        uses: haythem/public-ip@v1.3
+  
+      - name: Whitelist Runner IP
+        env:
+          AWS_INSTANCE_SG_ID: ${{ secrets.AWS_INSTANCE_SG_ID }}
+        run: |
+          aws ec2 authorize-security-group-ingress \
+            --group-id $AWS_INSTANCE_SG_ID \
+            --protocol tcp \
+            --port 5432 \
+            --cidr ${{ steps.ip.outputs.ipv4 }}/32
+
       - name: Build, tag, and push docker image to Amazon ECR
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
@@ -55,3 +69,13 @@ jobs:
             --cluster $CLUSTER_NAME \
             --service ${SERVICE_NAME} \
             --force-new-deployment
+
+      - name: Revoke Runner IP address
+        env:
+          AWS_INSTANCE_SG_ID: ${{ secrets.AWS_INSTANCE_SG_ID }}
+        run: |
+          aws ec2 revoke-security-group-ingress \
+            --group-id $AWS_INSTANCE_SG_ID \
+            --protocol tcp \
+            --port 5432 \
+            --cidr ${{ steps.ip.outputs.ipv4 }}/32
