@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.create_builds.app.tables.build.model.BuildModel;
 import com.create_builds.app.tables.build.modelservice.BuildRepoService;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -52,7 +53,7 @@ public class BuildRestController {
         return modelrepo.saveModel(model);
     }
     
-    @DeleteMapping("/builds/{id}")
+    @PutMapping("/builds/{id}")
     public BuildModel putBuild(@PathVariable Integer id, @RequestBody BuildModel model) {
     	return modelrepo.updateModel(model, id);
     }
