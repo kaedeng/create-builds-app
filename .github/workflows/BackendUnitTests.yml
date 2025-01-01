@@ -1,4 +1,8 @@
 name: Backend Junit Tests
+permissions:
+  checks: write
+  contents: read
+  pull-requests: write
 on:
   pull_request:
 
@@ -50,3 +54,5 @@ jobs:
         if: success() || failure()
         with:
           report_paths: '**/target/surefire-reports/TEST-*.xml'
+          include_passed: true
+          github_token: ${{ secrets.GITHUB_TOKEN }}
