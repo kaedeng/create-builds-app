@@ -36,7 +36,6 @@ public class BuildRestController {
     	return modelrepo.getModelById(id);
     }
     
-    @GetMapping("/homepage-builds")
     public List<BuildModel> findTopBuilds() {
         return modelrepo.findTopBuilds();
     }
