@@ -29,7 +29,7 @@ public class BuildRestController {
 		return null;
 	}
     
-    @GetMapping("/builds/${id}")
+    @GetMapping("/builds/{id}")
     public BuildModel getBuildById(@PathVariable Integer id) {
     	return modelrepo.getModelById(id);
     }
