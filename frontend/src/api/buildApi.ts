@@ -1,13 +1,5 @@
 import axiosInstance from './axiosInstance';
 
-type BuildPreview = {
-  id: number;
-  title: string;
-  img_link: string;
-  total_upvotes: number;
-  hasUpvoted?: boolean; //May be removed based on design
-};
-
 type BuildDetails = {
   id: number;
   username: string;
@@ -26,7 +18,7 @@ type BuildCreationDetails = {
   nbt: string;
 };
 
-export const getTopBuilds = async (): Promise<BuildPreview[]> => {
+export const getTopBuilds = async (): Promise<BuildDetails[]> => {
   try {
     const response = await axiosInstance.get('/homepage-builds');
     return response.data;
@@ -46,7 +38,7 @@ export const getBuild = async (id: number): Promise<BuildDetails> => {
   }
 };
 
-export const getUsersBuilds = async (): Promise<BuildPreview[]> => {
+export const getUsersBuilds = async (): Promise<BuildDetails[]> => {
   try {
     const response = await axiosInstance.get('/profile/builds');
     return response.data;

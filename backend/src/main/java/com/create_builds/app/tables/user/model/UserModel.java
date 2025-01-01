@@ -20,7 +20,7 @@ public class UserModel {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	@Column(name="google_id")
-	private Long google_id;
+	private String google_id;
 	@Column(name="username")
 	private String username;
 }

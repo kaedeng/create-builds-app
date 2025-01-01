@@ -8,7 +8,7 @@ import com.create_builds.app.tables.user.modelservice.UserRepoService;
 import com.create_builds.app.tables.user.repo.UserModelRepo;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api/profile")
 @CrossOrigin(origins = "https://createbuildsmc.com/")
 public class UserRestController extends BaseRestController<
         UserModel, 
