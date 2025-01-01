@@ -1,4 +1,3 @@
-import axios from 'axios';
 import axiosInstance from './axiosInstance';
 
 type Comment = {
@@ -9,19 +8,29 @@ type Comment = {
 };
 
 export const getComments = async (build_id: number): Promise<Comment[]> => {
-  const response = await axiosInstance.get(`/builds/${build_id}/comments`);
-  return response.data;
+  try {
+    const response = await axiosInstance.get(`/builds/${build_id}/comments`);
+    return response.data;
+  } catch (error) {
+    console.error('Error:', error);
+    throw error;
+  }
 };
 
 export const postComment = async (
   build_id: number,
   content: string
 ): Promise<Comment> => {
-  const response = await axiosInstance.post(
-    `/builds/${build_id}/comments`,
-    content
-  );
-  return response.data;
+  try {
+    const response = await axiosInstance.post(
+      `/builds/${build_id}/comments`,
+      content
+    );
+    return response.data;
+  } catch (error) {
+    console.error('Error:', error);
+    throw error;
+  }
 };
 
 export const putComment = async (
@@ -29,19 +38,29 @@ export const putComment = async (
   build_id: number,
   content: string
 ): Promise<Comment> => {
-  const response = await axiosInstance.put(
-    `/builds/${build_id}/comments/${id}`,
-    content
-  );
-  return response.data;
+  try {
+    const response = await axiosInstance.put(
+      `/builds/${build_id}/comments/${id}`,
+      content
+    );
+    return response.data;
+  } catch (error) {
+    console.error('Error:', error);
+    throw error;
+  }
 };
 
 export const deleteComment = async (
   id: number,
   build_id: number
 ): Promise<string> => {
-  const response = await axiosInstance.delete(
-    `/builds/${build_id}/comments/${id}`
-  );
-  return response.data;
+  try {
+    const response = await axiosInstance.delete(
+      `/builds/${build_id}/comments/${id}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error('Error:', error);
+    throw error;
+  }
 };

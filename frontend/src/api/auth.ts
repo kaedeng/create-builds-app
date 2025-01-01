@@ -1,8 +1,8 @@
 import axiosInstance from './axiosInstance';
 
-export const getUser = async (): Promise<string> => {
+export const loginUser = async (idToken: string): Promise<string> => {
   try {
-    const response = await axiosInstance.get('/profile');
+    const response = await axiosInstance.post('/auth', { idToken });
     return response.data;
   } catch (error) {
     console.error('Error:', error);
@@ -10,9 +10,9 @@ export const getUser = async (): Promise<string> => {
   }
 };
 
-export const putUser = async (username: string): Promise<string> => {
+export const logoutUser = async (): Promise<string> => {
   try {
-    const response = await axiosInstance.put('/profile', username);
+    const response = await axiosInstance.post('/logout');
     return response.data;
   } catch (error) {
     console.error('Error:', error);
