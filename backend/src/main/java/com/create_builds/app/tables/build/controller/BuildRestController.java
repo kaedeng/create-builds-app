@@ -3,6 +3,7 @@ package com.create_builds.app.tables.build.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -40,12 +41,13 @@ public class BuildRestController {
         return modelrepo.findTopBuilds();
     }
     
-    @GetMapping("/profile/builds")
-    public List<BuildModel> getUsersBuilds(@CookieValue("userId") Integer id) {
-    	if (id == null) {
-            throw new IllegalArgumentException("User ID is not present in cookies");
+    @GetMapping("/homepage-builds")
+    public ResponseEntity<List<BuildModel>> fetchTopBuilds() {
+        List<BuildModel> builds = modelrepo.findTopBuilds();
+        if (builds.isEmpty()) {
+            return ResponseEntity.noContent().build(); // 204 No Content if no builds
         }
-        return modelrepo.findBuildsFromUserId(id);
+        return ResponseEntity.ok(builds); // 200 OK with data
     }
     
     @PostMapping("/builds")
