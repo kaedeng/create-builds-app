@@ -41,6 +41,7 @@ jobs:
           PGUSER: myuser
           PGPASS: mypassword
         run: |
+          cd backend
           mvn --batch-mode -DskipTests package
           mvn --batch-mode -Dmaven.test.failure.ignore=true test
 

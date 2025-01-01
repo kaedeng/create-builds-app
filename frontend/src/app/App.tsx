@@ -1,5 +1,4 @@
 import './App.css';
-import { useEffect } from 'react';
 import LoginButton from '../components/LoginButton/LoginButton';
 import { ApiTestButtons } from '../components/ApiTestButton/ApiTestButtons';
 import LogoutButton from '../components/LogoutButton/LogoutButton';

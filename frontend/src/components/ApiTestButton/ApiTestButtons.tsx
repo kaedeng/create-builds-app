@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { postUpvote, deleteUpvote } from '../../api/upvoteApi';
 import {
   getComments,
