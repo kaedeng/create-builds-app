@@ -8,6 +8,6 @@ import com.create_builds.app.tables.comment.model.CommentModel;
 import org.springframework.stereotype.Repository;
 @Repository
 public interface CommentModelRepo extends JpaRepository<CommentModel, Integer>{
-	@Query("SELECT c FROM comment c WHERE c.build_id = :buildId")
+	@Query("SELECT c FROM CommentModel c WHERE c.build_id = :buildId")
 	public List<CommentModel> findCommentsByBuildId(Integer id);
 }

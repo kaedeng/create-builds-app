@@ -10,8 +10,8 @@ import java.util.List;
 
 @Repository
 public interface BuildModelRepo extends JpaRepository<BuildModel, Integer> {
-    @Query("SELECT b FROM build b ORDER BY b.upvotes DESC")
+	@Query("SELECT b FROM BuildModel b ORDER BY b.upvotes DESC")
     public List<BuildModel> findTopBuilds();
-    @Query("SELECT b FROM build b WHERE b.user_id = :userId")
+	@Query("SELECT b FROM BuildModel b WHERE b.user_id = :userId")
     public List<BuildModel> findBuildsByUserId(Integer userId);
 }
