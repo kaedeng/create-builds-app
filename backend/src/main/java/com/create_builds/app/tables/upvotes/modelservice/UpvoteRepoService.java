@@ -29,4 +29,8 @@ public class UpvoteRepoService extends RepoService<UpvoteModel, Integer, UpvoteM
         }
 		return modelrepo.save(upd);
 	}
+
+	public UpvoteModel getUpvoteByBuildId(Integer buildId) {
+		return modelrepo.findUpvoteByBuildId(buildId);
+	}
 }

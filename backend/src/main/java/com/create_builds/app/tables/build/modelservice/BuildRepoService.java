@@ -1,15 +1,26 @@
 package com.create_builds.app.tables.build.modelservice;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import com.create_builds.app.reposervice.RepoService;
 import com.create_builds.app.tables.build.model.BuildModel;
 import com.create_builds.app.tables.build.repo.BuildModelRepo;
+import com.create_builds.app.tables.comment.model.CommentModel;
 
 @Service
 public class BuildRepoService extends RepoService<BuildModel, Integer, BuildModelRepo>{
 	public BuildRepoService(BuildModelRepo modelrepo){
 		super();
         this.modelrepo = modelrepo;
+	}
+	
+	public List<BuildModel> findTopBuilds(){
+		return modelrepo.findTopBuilds();
+	}
+	
+	public List<BuildModel> findBuildsFromUserId(Integer id){
+		return modelrepo.findBuildsByUserId(id);
 	}
 	
 	@Override

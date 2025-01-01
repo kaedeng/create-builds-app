@@ -1,8 +1,13 @@
 package com.create_builds.app.tables.comment.repo;
 
-import org.springframework.data.repository.CrudRepository;
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import com.create_builds.app.tables.comment.model.CommentModel;
 import org.springframework.stereotype.Repository;
 @Repository
-public interface CommentModelRepo extends CrudRepository<CommentModel, Integer>{
+public interface CommentModelRepo extends JpaRepository<CommentModel, Integer>{
+	@Query("SELECT c FROM comment c WHERE c.build_id = :buildId")
+	public List<CommentModel> findCommentsByBuildId(Integer id);
 }

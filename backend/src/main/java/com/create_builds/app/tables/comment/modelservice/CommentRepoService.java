@@ -1,5 +1,7 @@
 package com.create_builds.app.tables.comment.modelservice;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.create_builds.app.reposervice.RepoService;
@@ -27,5 +29,9 @@ public class CommentRepoService extends RepoService<CommentModel, Integer, Comme
             upd.setContent(model.getContent());
         }
         return modelrepo.save(upd);
+	}
+
+	public List<CommentModel> findCommentsByBuildId(Integer buildId) {
+		return modelrepo.findCommentsByBuildId(buildId);
 	}
 }
