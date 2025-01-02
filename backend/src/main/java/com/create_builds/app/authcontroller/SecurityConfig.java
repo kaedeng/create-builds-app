@@ -26,8 +26,8 @@ public class SecurityConfig {
                                 .anyRequest().authenticated()
                 )
                 .oauth2Login(Customizer.withDefaults())
-                .requiresChannel(channel -> channel.anyRequest().requiresSecure());
-               // .csrf(csrf -> csrf.disable());
+                //.requiresChannel(channel -> channel.anyRequest().requiresSecure());
+                .csrf(csrf -> csrf.disable());
         
         return http.build();
     }
