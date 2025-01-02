@@ -25,9 +25,9 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET, "/", "/api/homepage-builds", "/api/builds/**", "/api/health/ping").permitAll()
                                 .anyRequest().authenticated()
                 )
-                .oauth2Login(Customizer.withDefaults())
-                .requiresChannel(channel -> channel.anyRequest().requiresSecure())
-                .csrf(csrf -> csrf.disable());
+                .oauth2Login(Customizer.withDefaults());
+               // .requiresChannel(channel -> channel.anyRequest().requiresSecure())
+               // .csrf(csrf -> csrf.disable());
         
         return http.build();
     }
