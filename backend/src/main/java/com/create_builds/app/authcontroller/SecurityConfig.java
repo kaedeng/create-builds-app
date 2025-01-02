@@ -6,6 +6,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -24,10 +25,21 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
                                 .requestMatchers(HttpMethod.GET, "/", "/api/homepage-builds", "/api/builds/**", "/api/health/ping").permitAll()
-                				.requestMatchers(HttpMethod.GET, "/api/health/ping").permitAll()
                                 .anyRequest().authenticated()
                 )
-                .oauth2Login(Customizer.withDefaults())
+                .oauth2Login(oauth2Login -> 
+                oauth2Login
+                    .defaultSuccessUrl("/", true)
+                    .successHandler((request, response, authentication) -> {
+                        OAuth2User user = (OAuth2User) authentication.getPrincipal();
+                        System.out.println("User details: " + user.getAttributes());
+                        response.sendRedirect("https://createbuildsmc.com/");
+                    })
+                    .failureHandler((request, response, exception) -> {
+                        exception.printStackTrace();
+                    })
+                )
+
                 .requiresChannel(channel -> channel.anyRequest().requiresSecure())
                 .csrf(csrf -> csrf.disable());
         
