@@ -6,7 +6,6 @@ import reportWebVitals from './utils/reportWebVitals';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { createHashRouter, RouterProvider } from 'react-router-dom';
-import './index.css';
 
 const router = createHashRouter([
   {
