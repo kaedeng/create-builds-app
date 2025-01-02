@@ -44,6 +44,8 @@ jobs:
           PGADDR: localhost
           PGUSER: myuser
           PGPASS: mypassword
+          GOOGLE_ID: ${GOOGLE_ID}
+          GOOGLE_SECRET_ID: ${GOOGLE_SECRET_ID}
         run: |
           cd backend
           mvn --batch-mode -DskipTests package
