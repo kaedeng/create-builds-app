@@ -52,13 +52,15 @@ jobs:
           PGADDR: ${{ secrets.PGADDR }}
           PGUSER: ${{ secrets.PGUSER }}
           PGPASS: ${{ secrets.PGPASS }}
+          GOOGLE_ID: ${{ secrets.GOOGLE_ID }}
+          GOOGLE_SECRET_ID: ${{ secrets.GOOGLE_SECRET_ID }}
         run: |
           docker build \
             --build-arg SPRING_DATASOURCE_URL=jdbc:postgresql://${PGADDR}/db \
             --build-arg SPRING_DATASOURCE_USERNAME=${PGUSER} \
             --build-arg SPRING_DATASOURCE_PASSWORD=${PGPASS} \
-            --build-arg GOOGLE_ID=${{ secrets.GOOGLE_ID }} \
-            --build-arg GOOGLE_SECRET_ID=${{ secrets.GOOGLE_SECRET_ID }} \
+            --build-arg GOOGLE_ID=${GOOGLE_ID} \
+            --build-arg GOOGLE_SECRET_ID=${GOOGLE_SECRET_ID} \
             -t $REGISTRY/$REPOSITORY-backend:$IMAGE_TAG ./backend
           docker push $REGISTRY/$REPOSITORY-backend:$IMAGE_TAG
 
