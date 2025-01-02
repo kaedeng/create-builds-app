@@ -10,5 +10,9 @@ public class AuthController {
 	public String authorizeLogin() {
 		return "redirect:/oauth2/authorization/google";
 	}
-	
+    @GetMapping("/api/health/ping")
+    public String ping() {
+        System.out.println("pinged!");
+        return "pong";
+    }
 }

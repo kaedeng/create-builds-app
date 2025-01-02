@@ -26,12 +26,6 @@ public class UserRestController {
     	modelrepo.delModel(id);
     }
     
-    @GetMapping("/ping")
-    public String ping() {
-        System.out.println("pinged!");
-        return "pong";
-    }
-    
     @GetMapping
     public ResponseEntity<UserModel> fetch(@CookieValue Integer id) {
         try {
