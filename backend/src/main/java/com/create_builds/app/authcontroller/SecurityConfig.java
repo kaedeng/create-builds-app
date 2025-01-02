@@ -22,7 +22,7 @@ public class SecurityConfig {
         http
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
-                                .requestMatchers(HttpMethod.GET, "/", "/homepage-builds", "/builds/**", "/health/ping").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/", "/api/homepage-builds", "/api/builds/**", "/api/health/ping").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .oauth2Login(Customizer.withDefaults())
