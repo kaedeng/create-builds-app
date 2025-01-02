@@ -17,7 +17,7 @@ public class SecurityConfig {
 		
 		http
 			.authorizeHttpRequests(auth -> auth
-					.requestMatchers(HttpMethod.GET, "/", "/homepage-builds", "/builds/**").permitAll()
+					.requestMatchers(HttpMethod.GET, "/", "/homepage-builds", "/builds/**", "/health/ping").permitAll()
 					.anyRequest().authenticated())
 			.oauth2Login(Customizer.withDefaults())
 			.requiresChannel(channel -> channel.anyRequest().requiresSecure());
