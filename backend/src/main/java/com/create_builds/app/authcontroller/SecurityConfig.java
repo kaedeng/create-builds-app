@@ -3,7 +3,6 @@ package com.create_builds.app.authcontroller;
 //import org.springframework.context.annotation.Bean;
 //import org.springframework.context.annotation.Configuration;
 
-import org.springframework.security.config.Customizer;
 import org.springframework.http.HttpMethod;
 
 //import org.springframework.security.config.Customizer;
@@ -74,29 +73,37 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
-	@Bean
-	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    @Bean
+    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		
 		http
 		
 			.authorizeHttpRequests(auth -> {
-                auth.requestMatchers(HttpMethod.GET, "/", "/api/homepage-builds", "/api/builds/**", "/api/health/ping").permitAll();
+                auth.requestMatchers(HttpMethod.GET, "/", "/api/homepage-builds", "/api/builds/**", "/api/health/ping", "/login", "/oauth2/**", "/favicon.ico").permitAll();
                 auth.anyRequest().authenticated();
 			})
 			.oauth2Login(oauth2 -> oauth2
 	                .successHandler((request, response, authentication) -> {
-	                    // After successful authentication, redirect to your frontend
 	                    response.sendRedirect("https://createbuildsmc.com");
 	            })
 	        );
 		
 		return http.build();
 	}
+	
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+            .allowedOrigins("https://createbuildsmc.com")
+            .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+            .allowCredentials(true)
+            .allowedHeaders("*");
+    }
 	
 }
 
