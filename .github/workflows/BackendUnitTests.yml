@@ -46,6 +46,8 @@ jobs:
           PGPASS: mypassword
           GOOGLE_ID: ${{ secrets.GOOGLE_ID }}
           GOOGLE_SECRET_ID: ${{ secrets.GOOGLE_SECRET_ID }}
+          GH_CLIENT_ID: ${{ secrets.GH_CLIENT_ID }}
+          GH_CLIENT_SECRET: ${{ secrets.GH_CLIENT_SECRET }} 
         run: |
           cd backend
           mvn --batch-mode -DskipTests package

@@ -182,7 +182,7 @@ export const ApiTestButtons = () => {
     }
   };
 
-  const testLoginUser = async () => {
+  const testLoginUser = () => {
     loginUser();
   };
 
