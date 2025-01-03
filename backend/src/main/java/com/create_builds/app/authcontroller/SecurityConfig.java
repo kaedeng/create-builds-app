@@ -31,11 +31,6 @@ public class SecurityConfig {
                 .oauth2Login(oauth2Login -> 
                 oauth2Login
                     .defaultSuccessUrl("/", true)
-                    .successHandler((request, response, authentication) -> {
-                        OAuth2User user = (OAuth2User) authentication.getPrincipal();
-                        System.out.println("User details: " + user.getAttributes());
-                        response.sendRedirect("https://createbuildsmc.com/");
-                    })
                     .failureHandler((request, response, exception) -> {
                         exception.printStackTrace();
                     })
