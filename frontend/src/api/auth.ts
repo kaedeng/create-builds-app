@@ -1,8 +1,8 @@
 import axiosInstance from './axiosInstance';
 
-export const loginUser = async (idToken: string): Promise<string> => {
+export const loginUser = async (): Promise<string> => {
   try {
-    const response = await axiosInstance.post('/auth', { idToken });
+    const response = await axiosInstance.get('/login');
     return response.data;
   } catch (error) {
     console.error('Error:', error);

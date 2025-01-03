@@ -16,6 +16,7 @@ import {
   deleteBuild,
 } from '../../api/buildApi';
 import PingApi from '../../api/pingApi';
+import { loginUser } from '../../api/auth';
 
 export const ApiTestButtons = () => {
   const [buildId, setBuildId] = useState('');
@@ -181,6 +182,15 @@ export const ApiTestButtons = () => {
     }
   };
 
+  const testLoginUser = async () => {
+    try {
+      const result = await loginUser();
+      console.log(result);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
   return (
     <div>
       <div>
@@ -244,6 +254,7 @@ export const ApiTestButtons = () => {
       <button onClick={testPutBuild}>Test Put Build</button>
       <button onClick={testDeleteBuild}>Test Delete Build</button>
       <button onClick={testPing}>Ping</button>
+      <button onClick={testLoginUser}>Log in</button>
     </div>
   );
 };

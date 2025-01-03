@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class AuthController {
 
-	@GetMapping("/api/auth")
+	@GetMapping("/api/login")
 	public String authorizeLogin() {
-		return "redirect:/oauth2/authorization/google";
+		return "Hi";
 	}
     @GetMapping("/api/health/ping")
     public String ping() {

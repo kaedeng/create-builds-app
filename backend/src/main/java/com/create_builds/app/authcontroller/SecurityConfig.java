@@ -25,6 +25,7 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
                                 .requestMatchers(HttpMethod.GET, "/", "/api/homepage-builds", "/api/builds/**", "/api/health/ping").permitAll()
+                                .requestMatchers("/api/login").authenticated()
                                 .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth2Login -> 
@@ -64,6 +65,5 @@ public class SecurityConfig {
     public ForwardedHeaderFilter forwardedHeaderFilter() {
         return new ForwardedHeaderFilter();
     }
-
 
 }
