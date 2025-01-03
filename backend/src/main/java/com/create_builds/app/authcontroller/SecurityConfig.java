@@ -86,6 +86,7 @@ public class SecurityConfig {
 		
 			.authorizeHttpRequests(auth -> {
                 auth.requestMatchers(HttpMethod.GET, "/", "/api/homepage-builds", "/api/builds/**", "/api/health/ping", "/login", "/oauth2/**", "/favicon.ico").permitAll();
+                auth.requestMatchers("/oauth2/authorization/**").permitAll();
                 auth.anyRequest().authenticated();
 			})
 			.oauth2Login(oauth2 -> oauth2
