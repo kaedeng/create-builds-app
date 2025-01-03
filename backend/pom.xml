@@ -66,13 +66,19 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
+		  <groupId>com.auth0</groupId>
+		  <artifactId>jwks-rsa</artifactId>
+		  <version>0.22.1</version>
+		</dependency>
+		<dependency>
+		  <groupId>com.auth0</groupId>
+		  <artifactId>java-jwt</artifactId>
+		  <version>4.4.0</version>
+		</dependency>
+		<dependency>
     		<groupId>dev.dewy</groupId>
     		<artifactId>nbt</artifactId>
     		<version>1.5.1</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-oauth2-client</artifactId>
 		</dependency>
 	</dependencies>
 
