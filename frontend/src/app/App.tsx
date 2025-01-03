@@ -1,15 +1,16 @@
 import './App.css';
-import LoginButton from '../components/LoginButton/LoginButton';
 import { ApiTestButtons } from '../components/ApiTestButton/ApiTestButtons';
-import LogoutButton from '../components/LogoutButton/LogoutButton';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Dashboard from '../components/Dashboard/Dashboard';
 
 function App() {
   return (
-    <div className="App">
-      <LoginButton />
-      <ApiTestButtons />
-      <LogoutButton />
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<ApiTestButtons />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+      </Routes>
+    </Router>
   );
 }
 

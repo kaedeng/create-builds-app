@@ -82,7 +82,7 @@ public class SecurityConfig {
 		http
 				.authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
 				.oauth2Login(oauth2 ->
-						oauth2.defaultSuccessUrl("https://createbuildsmc.com", true));
+						oauth2.defaultSuccessUrl("https://createbuildsmc.com/dashboard", true));
 		
 		return http.build();
 	}

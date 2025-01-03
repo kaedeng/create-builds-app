@@ -5,24 +5,10 @@ import App from './app/App';
 import reportWebVitals from './utils/reportWebVitals';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { createHashRouter, RouterProvider } from 'react-router-dom';
-
-const router = createHashRouter([
-  {
-    path: '/',
-    element: <App />,
-    children: [
-      {
-        // path: '/test',
-        // element: <Test />,
-      },
-    ],
-  },
-]);
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <App />
   </StrictMode>
 );
 
