@@ -64,7 +64,7 @@ jobs:
             --build-arg GOOGLE_ID=${GOOGLE_ID} \
             --build-arg GOOGLE_SECRET_ID=${GOOGLE_SECRET_ID} \
             --build-arg GH_CLIENT_ID=${GH_CLIENT_ID} \
-            --build-arg GH_CLIENT_SECRET=${GH_CLIENT_SECRET}
+            --build-arg GH_CLIENT_SECRET=${GH_CLIENT_SECRET} \
             -t $REGISTRY/$REPOSITORY-backend:$IMAGE_TAG ./backend
           docker push $REGISTRY/$REPOSITORY-backend:$IMAGE_TAG
 
