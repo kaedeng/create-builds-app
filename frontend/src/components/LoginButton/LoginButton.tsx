@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { loginUser } from '../../api/auth';
+//import { loginUser } from '../../api/auth';
 
 declare const google: any;
 
@@ -7,10 +7,10 @@ const clientId =
   '918801476528-js45th9lis27pqa9hu34v3trqp9i50sr.apps.googleusercontent.com';
 
 const LoginButton = () => {
-  const handleCallbackResponse = async (response: any) => {
-    const idToken: string = response.credential;
-    // loginUser(idToken);
-  };
+  // const handleCallbackResponse = async (response: any) => {
+  //   //const idToken: string = response.credential;
+  //   // loginUser(idToken);
+  // };
 
   useEffect(() => {
     const script = document.createElement('script');
@@ -22,7 +22,7 @@ const LoginButton = () => {
       if (google) {
         google.accounts.id.initialize({
           client_id: clientId,
-          callback: handleCallbackResponse,
+          //callback: handleCallbackResponse,
         });
 
         google.accounts.id.renderButton(document.getElementById('signInDiv'), {
