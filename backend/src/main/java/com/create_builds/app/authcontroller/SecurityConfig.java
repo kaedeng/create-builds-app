@@ -2,7 +2,7 @@ package com.create_builds.app.authcontroller;
 //
 //import org.springframework.context.annotation.Bean;
 //import org.springframework.context.annotation.Configuration;
-//import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpMethod;
 //import org.springframework.security.config.Customizer;
 //import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 //import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -67,7 +67,7 @@ package com.create_builds.app.authcontroller;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
+//import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
@@ -80,7 +80,10 @@ public class SecurityConfig {
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		
 		http
-				.authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
+		
+			.authorizeHttpRequests(auth -> auth
+                .requestMatchers(HttpMethod.GET, "/", "/api/homepage-builds", "/api/builds/**", "/api/health/ping").permitAll()
+                .anyRequest().authenticated())
 				.oauth2Login(oauth2 ->
 						oauth2.defaultSuccessUrl("https://createbuildsmc.com/dashboard", true));
 		
