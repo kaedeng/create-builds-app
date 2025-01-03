@@ -183,12 +183,7 @@ export const ApiTestButtons = () => {
   };
 
   const testLoginUser = async () => {
-    try {
-      const result = await loginUser();
-      console.log(result);
-    } catch (error) {
-      console.error('Error:', error);
-    }
+    loginUser();
   };
 
   return (
