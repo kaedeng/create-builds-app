@@ -2,7 +2,7 @@ import axiosInstance from './axiosInstance';
 
 export const loginUser = (): void => {
   window.location.href =
-    'https://createbuildsmc.com/oauth2/authorization/google';
+    'https://api.createbuildsmc.com/oauth2/authorization/google';
 };
 
 export const logoutUser = async (): Promise<string> => {
