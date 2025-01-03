@@ -30,7 +30,7 @@ public class SecurityConfig {
                 )
                 .oauth2Login(oauth2Login -> 
                 oauth2Login
-                    .defaultSuccessUrl("/", true)
+                	.defaultSuccessUrl("https://createbuildsmc.com", true)
                     .failureHandler((request, response, exception) -> {
                         exception.printStackTrace();
                     })
