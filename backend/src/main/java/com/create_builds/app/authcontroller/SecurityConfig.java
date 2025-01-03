@@ -40,8 +40,6 @@ public class SecurityConfig {
                         exception.printStackTrace();
                     })
                 )
-
-                .requiresChannel(channel -> channel.anyRequest().requiresSecure())
                 .csrf(csrf -> csrf.disable());
         
         return http.build();
