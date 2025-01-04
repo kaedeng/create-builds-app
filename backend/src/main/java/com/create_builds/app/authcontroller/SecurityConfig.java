@@ -39,9 +39,9 @@ public class SecurityConfig {
 	                    exception.printStackTrace();
 	                })
 	            )
-	            .csrf(csrf -> csrf.disable())
-	            .requiresChannel(channel -> channel
-	                    .anyRequest().requiresSecure());
+	            .csrf(csrf -> csrf.disable());
+//	            .requiresChannel(channel -> channel
+//	                    .anyRequest().permitAll());
 	    return http.build();
 	}
 
