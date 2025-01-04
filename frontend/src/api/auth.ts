@@ -1,8 +1,12 @@
 import axiosInstance from './axiosInstance';
 
-export const loginUser = async (id: string): Promise<string> => {
+export const loginUser = async (idToken: string): Promise<string> => {
   try {
-    const response = await axiosInstance.post('/login', id);
+    const response = await axiosInstance.get('/login', {
+      headers: {
+        Authorization: `Bearer ${idToken}`,
+      },
+    });
     return response.data;
   } catch (error) {
     console.error('Error:', error);
