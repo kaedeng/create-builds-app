@@ -2,7 +2,7 @@ import axiosInstance from './axiosInstance';
 
 export const loginUser = async (id: string): Promise<string> => {
   try {
-    const response = await axiosInstance.post('/api/login', id);
+    const response = await axiosInstance.post('/login', id);
     return response.data;
   } catch (error) {
     console.error('Error:', error);
