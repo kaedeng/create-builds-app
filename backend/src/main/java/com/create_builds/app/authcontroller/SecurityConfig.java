@@ -25,8 +25,7 @@ public class SecurityConfig {
 	            .cors(Customizer.withDefaults())
 	            .authorizeHttpRequests(auth -> auth
 	                            .requestMatchers(HttpMethod.GET, "/", "/api/homepage-builds", "/api/builds/**", "/api/health/ping").permitAll()
-	                            .requestMatchers("/api/login/**").permitAll()
-	                            .anyRequest().authenticated()
+	                            .anyRequest().permitAll()
 	            )
 	            .oauth2Login(oauth2Login -> 
 	            oauth2Login
