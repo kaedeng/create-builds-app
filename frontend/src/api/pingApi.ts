@@ -3,7 +3,7 @@ import axios from 'axios';
 const PingApi = async () => {
   try {
     const response = await axios.get(
-      'https://ec2-35-163-207-8.us-west-2.compute.amazonaws.com/api/health/ping',
+      'cba-lb-1126998897.us-west-2.elb.amazonaws.com/api/health/ping',
       { withCredentials: true }
     );
     return response.data;
