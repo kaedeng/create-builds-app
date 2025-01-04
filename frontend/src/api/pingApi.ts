@@ -3,7 +3,7 @@ import axios from 'axios';
 const PingApi = async () => {
   try {
     const response = await axios.get(
-      'https://api.createbuildsmc.com/api/health/ping',
+      'https://ec2-35-163-207-8.us-west-2.compute.amazonaws.com/api/health/ping',
       { withCredentials: true }
     );
     return response.data;
