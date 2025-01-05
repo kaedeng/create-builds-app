@@ -16,7 +16,10 @@ public class AuthController {
 		System.out.println("Received token: " + idToken);
 		boolean isValid = JwtVerifier.verifyToken(idToken);
         System.out.println("Is token valid? " + isValid);
+        if(isValid)
 		return "Win?" + idToken;
+        else
+        return "Lose):" + idToken;
 	}
 	
     @GetMapping("/api/health/ping")
