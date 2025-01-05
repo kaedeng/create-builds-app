@@ -15,7 +15,8 @@ public class AuthController {
 
 	@PostMapping("/api/login")
 	public String authorizeLogin(@RequestBody String idToken, HttpServletResponse response) {
-		Boolean isValid = JwtVerifier.verifyToken(idToken, response);
+		JwtVerifier bruh = new JwtVerifier();
+		Boolean isValid = bruh.verifyToken(idToken, response);
         if(isValid)
 		return "JWT Token Authorized";
         else

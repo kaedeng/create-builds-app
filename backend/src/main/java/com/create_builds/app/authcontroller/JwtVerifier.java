@@ -22,12 +22,14 @@ import com.create_builds.app.tables.user.modelservice.UserRepoService;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.NoArgsConstructor;
 
 @Controller
+@NoArgsConstructor
 public class JwtVerifier {
 	
 	@Autowired
-	private static UserRepoService userRepo;
+	private UserRepoService userRepo;
     private static String clientId;
     private static RSAPrivateKey privateKey;
     private static RSAPublicKey publicMeKey;
@@ -45,19 +47,20 @@ public class JwtVerifier {
 	                .replace("-----BEGIN PRIVATE KEY-----", "")
 	                .replace("-----END PRIVATE KEY-----", "")
 	                .replaceAll("\\s", "");
+	        System.out.println("Cleaned Private Key: " + privateKeyPem);
 	        byte[] privateKeyBytes = Base64.getDecoder().decode(privateKeyPem);
 	        byte[] publicKeyBytes = Base64.getDecoder().decode(publicKeyPem);
 	        PKCS8EncodedKeySpec privSpec = new PKCS8EncodedKeySpec(privateKeyBytes);
 	        PKCS8EncodedKeySpec pubSpec = new PKCS8EncodedKeySpec(publicKeyBytes);
 	        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
 	        privateKey = (RSAPrivateKey) keyFactory.generatePrivate(privSpec);
-	        publicMeKey = (RSAPublicKey) keyFactory.generatePrivate(pubSpec);
+	        publicMeKey = (RSAPublicKey) keyFactory.generatePublic(pubSpec);
     	} catch (Exception e) {
             throw new RuntimeException("Failed to load private key", e);
         }
     }
     
-    public static Boolean verifyToken(String token, HttpServletResponse response) {
+    public Boolean verifyToken(String token, HttpServletResponse response) {
     	
         String strippedToken = token.substring(1, token.length() - 1);
 
