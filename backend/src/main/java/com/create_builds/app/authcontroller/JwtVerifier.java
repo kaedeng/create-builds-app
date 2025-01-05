@@ -20,7 +20,6 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.interfaces.JWTVerifier;
 import com.create_builds.app.tables.user.model.UserModel;
 import com.create_builds.app.tables.user.modelservice.UserRepoService;
-
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 
