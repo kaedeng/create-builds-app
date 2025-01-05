@@ -14,18 +14,11 @@ public class JwtVerifier {
     private static String clientSecret;
     
     static {
-        try (InputStream input = JwtVerifier.class.getClassLoader().getResourceAsStream("application.properties")) {
-        	
-            Properties prop = new Properties();
-            if (input == null) {
-                throw new RuntimeException("Unable to find application.properties");
-            }
-            prop.load(input);
-            clientId = prop.getProperty("spring.security.oauth2.client.registration.google.client-id");
-            clientSecret = prop.getProperty("spring.security.oauth2.client.registration.google.client-secret");
-            
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to load client ID from properties file", e);
+    	clientId = System.getenv("GOOGLE_ID");
+        clientSecret = System.getenv("GOOGLE_SECRET_ID");
+
+        if (clientId == null || clientSecret == null) {
+            throw new RuntimeException("Environment variables GOOGLE_ID and GOOGLE_SECRET_ID must be set");
         }
     }
 
