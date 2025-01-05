@@ -14,7 +14,7 @@ public class AuthController {
 	@PostMapping("/api/login")
 	public String authorizeLogin(@RequestBody String idToken) {
 		System.out.println("Received token: " + idToken);
-		boolean isValid = JwtVerifier.verifyToken(idToken);
+		Boolean isValid = JwtVerifier.verifyToken(idToken);
         System.out.println("Is token valid? " + isValid);
         if(isValid)
 		return "Win?" + idToken;
