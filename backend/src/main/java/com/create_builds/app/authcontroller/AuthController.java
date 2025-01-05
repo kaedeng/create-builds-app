@@ -13,6 +13,7 @@ public class AuthController {
 
 	@PostMapping("/api/login")
 	public String authorizeLogin(@RequestBody String idToken) {
+		System.out.println("Received token: " + idToken);
 		return "Win?" + idToken;
 	}
 	
