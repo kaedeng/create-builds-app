@@ -51,7 +51,8 @@ public class JwtVerifier {
             System.out.println("Issuer: " + decodedJWT.getIssuer());
             System.out.println("Expires at: " + decodedJWT.getExpiresAt());
         } catch (Exception e) {
-        	System.out.println("Token is invalid.");
+        	System.out.println("Token is invalid. Stack Trace:");
+        	e.printStackTrace();
             return false;
         }
         return true;
