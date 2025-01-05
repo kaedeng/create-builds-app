@@ -31,27 +31,29 @@ public class JwtVerifier {
     private static String clientId;
     private static RSAPrivateKey privateKey;
     private static RSAPublicKey publicMeKey;
-    
-    static {
-    	try {
-	    	clientId = System.getenv("GOOGLE_ID");
-	    	String privateKeyPem = System.getenv("PRIVATE_RSA_KEY");
-	    	String publicKeyPem = "MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA1KHeK3LrUbhM5J3k1UEhCW/TpzD93fM6rahNCGzLFqanmxVrVQzSkWDoFJ5RZBa1UDk6FSJR3u27q//ddYC3qigtbAlV/nVs2WMt+YKAOTM42w+enFqg9XM2uoIFIgjbTCuYxnYtqtXjhGUxvUU88i6Yzw+8/VQFtzIbmWqpmlBqmerXZAlsZkNp6QVtVxL5nTXRGje+W0BXoaFsLNwJaM96aid/CctTRGyDmOumK6ys1q/rOTBrLpVKDJP6AjjxFXseH4qSBUXvrPYoptOl2LYazvJHryRZCv9ZK2rBesvd6Tw9RWPgMuIjUMRflmn/A8cuGqN+JILJCligtqpIJcL0jg4dY/lOV7bZ3V6aFtgjkEmQr/OOTDthLtgKSYAcEDMy+P+PasM+VtTh/GtKfBA7E/GGe6LXd4gC/dlc29Vnd7a6pyXcglQIUR57zAm7WQuN3JiQeACYQ5QZW8aQQRMX5yvSwR3c0QSFEMR6wPa8QLyP5j+0/UhYuyWbPBBYJd7R6sWflJltST/M5V+OFYSIbla1/C+StB9PpZYRF6x18fUv6oU+JKXBm+XMC8EQj7hGFtp0E35TaoWCvHbpUdnclVmWejNLenZeksW2CnB9ZjHJHfwEFw7v3umgsBNktHWLyqEo8sMU7Y/gn6id7dr+Zo3YxCrWTDAP2uKooQsCAwEAAQ==";
-	        if (clientId == null) {
-	            throw new RuntimeException("Environment variables GOOGLE_ID and PRIVATE_RSA_KEY must be set");
-	        }
-	        
-	        privateKeyPem = privateKeyPem
-	                .replaceAll("\\s", "");
-	        byte[] privateKeyBytes = Base64.getDecoder().decode(privateKeyPem);
-	        byte[] publicKeyBytes = Base64.getDecoder().decode(publicKeyPem);
-	        PKCS8EncodedKeySpec privSpec = new PKCS8EncodedKeySpec(privateKeyBytes);
-	        X509EncodedKeySpec pubSpec = new X509EncodedKeySpec(publicKeyBytes);
-	        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
-	        privateKey = (RSAPrivateKey) keyFactory.generatePrivate(privSpec);
-	        publicMeKey = (RSAPublicKey) keyFactory.generatePublic(pubSpec);
-    	} catch (Exception e) {
-            throw new RuntimeException("Failed to load private key", e);
+    @Autowired
+    public JwtVerifier() {
+        try {
+            clientId = System.getenv("GOOGLE_ID");
+            String privateKeyPem = System.getenv("PRIVATE_RSA_KEY");
+            String publicKeyPem = "MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA1KHeK3LrUbhM5J3k1UEhCW/TpzD93fM6rahNCGzLFqanmxVrVQzSkWDoFJ5RZBa1UDk6FSJR3u27q//ddYC3qigtbAlV/nVs2WMt+YKAOTM42w+enFqg9XM2uoIFIgjbTCuYxnYtqtXjhGUxvUU88i6Yzw+8/VQFtzIbmWqpmlBqmerXZAlsZkNp6QVtVxL5nTXRGje+W0BXoaFsLNwJaM96aid/CctTRGyDmOumK6ys1q/rOTBrLpVKDJP6AjjxFXseH4qSBUXvrPYoptOl2LYazvJHryRZCv9ZK2rBesvd6Tw9RWPgMuIjUMRflmn/A8cuGqN+JILJCligtqpIJcL0jg4dY/lOV7bZ3V6aFtgjkEmQr/OOTDthLtgKSYAcEDMy+P+PasM+VtTh/GtKfBA7E/GGe6LXd4gC/dlc29Vnd7a6pyXcglQIUR57zAm7WQuN3JiQeACYQ5QZW8aQQRMX5yvSwR3c0QSFEMR6wPa8QLyP5j+0/UhYuyWbPBBYJd7R6sWflJltST/M5V+OFYSIbla1/C+StB9PpZYRF6x18fUv6oU+JKXBm+XMC8EQj7hGFtp0E35TaoWCvHbpUdnclVmWejNLenZeksW2CnB9ZjHJHfwEFw7v3umgsBNktHWLyqEo8sMU7Y/gn6id7dr+Zo3YxCrWTDAP2uKooQsCAwEAAQ==";
+
+            if (clientId == null) {
+                throw new RuntimeException("Environment variables GOOGLE_ID and PRIVATE_RSA_KEY must be set");
+            }
+
+            privateKeyPem = privateKeyPem.replaceAll("\\s", "");
+            byte[] privateKeyBytes = Base64.getDecoder().decode(privateKeyPem);
+            byte[] publicKeyBytes = Base64.getDecoder().decode(publicKeyPem);
+
+            PKCS8EncodedKeySpec privSpec = new PKCS8EncodedKeySpec(privateKeyBytes);
+            X509EncodedKeySpec pubSpec = new X509EncodedKeySpec(publicKeyBytes);
+
+            KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+            privateKey = (RSAPrivateKey) keyFactory.generatePrivate(privSpec);
+            publicMeKey = (RSAPublicKey) keyFactory.generatePublic(pubSpec);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to load keys", e);
         }
     }
     
