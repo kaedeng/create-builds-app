@@ -23,10 +23,8 @@ import com.create_builds.app.tables.user.modelservice.UserRepoService;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.NoArgsConstructor;
 
 @Controller
-@NoArgsConstructor
 public class JwtVerifier {
 	
 	@Autowired
@@ -46,7 +44,6 @@ public class JwtVerifier {
 	        
 	        privateKeyPem = privateKeyPem
 	                .replaceAll("\\s", "");
-	        System.out.println("Cleaned Private Key: " + privateKeyPem);
 	        byte[] privateKeyBytes = Base64.getDecoder().decode(privateKeyPem);
 	        byte[] publicKeyBytes = Base64.getDecoder().decode(publicKeyPem);
 	        PKCS8EncodedKeySpec privSpec = new PKCS8EncodedKeySpec(privateKeyBytes);
