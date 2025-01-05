@@ -40,9 +40,9 @@ public class JwtVerifier {
         if (token == null || token.length() <= 2) {
             throw new IllegalArgumentException("Token is too short to strip characters");
         }
-        String newToken = token.substring(1, token.length() - 1);
+        String strippedToken = token.substring(1, token.length() - 1);
     	
-    	System.out.println("token w/o first and last character: " + newToken);
+    	System.out.println("Stripped Token: " + strippedToken);
     	
     	// CODE
     	
@@ -51,7 +51,7 @@ public class JwtVerifier {
             JWTVerifier verifier = JWT.require(algorithm)
                     .withAudience(clientId)
                     .build();
-            DecodedJWT decodedJWT = verifier.verify(token);
+            DecodedJWT decodedJWT = verifier.verify(strippedToken);
             
             System.out.println("Token is valid.");
             System.out.println("Subject: " + decodedJWT.getSubject());
