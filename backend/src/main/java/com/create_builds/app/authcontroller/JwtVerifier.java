@@ -58,7 +58,6 @@ public class JwtVerifier {
                 return false;
             }
 
-            // Optionally, validate other claims (e.g., expiration, audience)
             System.out.println("Token is valid!");
             return true;
 
@@ -81,20 +80,7 @@ public class JwtVerifier {
 
             for (Map<String, Object> key : keys) {
                 if (keyId.equals(key.get("kid"))) {
-                    // Get the X.509 certificate chain
-                    List<String> x5cList = (List<String>) key.get("x5c");
-                    if (x5cList == null || x5cList.isEmpty()) {
-                        throw new IllegalArgumentException("x5c certificate chain is missing for keyId: " + keyId);
-                    }
-
-                    String x5c = x5cList.get(0);
-                    // Decode the certificate
-                    byte[] certBytes = Base64.getDecoder().decode(x5c);
-                    CertificateFactory certFactory = CertificateFactory.getInstance("X.509");
-                    X509Certificate certificate = (X509Certificate) certFactory.generateCertificate(new ByteArrayInputStream(certBytes));
-
-                    // Extract the public key from the certificate
-                    return (RSAPublicKey) certificate.getPublicKey();
+                    return extractPublicKeyFromJwk(key);
                 }
             }
         } catch (IOException e) {
@@ -112,8 +98,7 @@ public class JwtVerifier {
         connection.setReadTimeout(5000);    // 5 seconds timeout
 
         try (InputStream inputStream = connection.getInputStream()) {
-            // Save the JWKS to cache
-            saveJwksToCache(inputStream);
+            saveJwksToCache(inputStream); // Save to cache
             return new ObjectMapper().readValue(new File(JWKS_CACHE_FILE), Map.class);
         }
     }
@@ -139,19 +124,24 @@ public class JwtVerifier {
 
         for (Map<String, Object> key : keys) {
             if (keyId.equals(key.get("kid"))) {
-                List<String> x5cList = (List<String>) key.get("x5c");
-                if (x5cList == null || x5cList.isEmpty()) {
-                    throw new IllegalArgumentException("x5c certificate chain is missing for keyId: " + keyId);
-                }
-
-                String x5c = x5cList.get(0);
-                byte[] certBytes = Base64.getDecoder().decode(x5c);
-                CertificateFactory certFactory = CertificateFactory.getInstance("X.509");
-                X509Certificate certificate = (X509Certificate) certFactory.generateCertificate(new ByteArrayInputStream(certBytes));
-                return (RSAPublicKey) certificate.getPublicKey();
+                return extractPublicKeyFromJwk(key);
             }
         }
 
         throw new IllegalArgumentException("Public key not found for keyId: " + keyId);
+    }
+
+    private static RSAPublicKey extractPublicKeyFromJwk(Map<String, Object> key) throws Exception {
+        List<String> x5cList = (List<String>) key.get("x5c");
+        if (x5cList == null || x5cList.isEmpty()) {
+            throw new IllegalArgumentException("x5c certificate chain is missing for key.");
+        }
+
+        String x5c = x5cList.get(0);
+        byte[] certBytes = Base64.getDecoder().decode(x5c);
+        CertificateFactory certFactory = CertificateFactory.getInstance("X.509");
+        X509Certificate certificate = (X509Certificate) certFactory.generateCertificate(new ByteArrayInputStream(certBytes));
+
+        return (RSAPublicKey) certificate.getPublicKey();
     }
 }
