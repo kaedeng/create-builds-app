@@ -16,6 +16,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 	            )
 	            .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()))
 		        .csrf(csrf -> csrf.disable())
+		        .cors(Customizer.withDefaults())
 	            .requiresChannel(channel -> 
 	            channel.anyRequest().requiresSecure());
 	        return http.build();
