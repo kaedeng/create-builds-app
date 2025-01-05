@@ -2,7 +2,7 @@ import axiosInstance from './axiosInstance';
 
 export const loginUser = async (idToken: string): Promise<string> => {
   try {
-    const response = await axiosInstance.get('/login', {
+    const response = await axiosInstance.post('/login', idToken, {
       headers: {
         Authorization: `Bearer ${idToken}`,
       },

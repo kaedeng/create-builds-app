@@ -2,6 +2,8 @@ package com.create_builds.app.authcontroller;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -9,10 +11,11 @@ import org.springframework.web.bind.annotation.RestController;
 			 allowCredentials = "true")
 public class AuthController {
 
-	@GetMapping("/api/login")
-	public String authorizeLogin() {
-		return "Win?";
+	@PostMapping("/api/login")
+	public String authorizeLogin(@RequestBody String idToken) {
+		return "Win?" + idToken;
 	}
+	
     @GetMapping("/api/health/ping")
     public String ping() {
         System.out.println("pinged!");
