@@ -38,14 +38,12 @@ public class JwtVerifier {
     	try {
 	    	clientId = System.getenv("GOOGLE_ID");
 	    	String privateKeyPem = System.getenv("PRIVATE_RSA_KEY");
-	    	String publicKeyPem = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDSITa/FpjXyfizk2ZNm38Iu+xx55mQrQTxMc9qtQQT109i+iRQ0m2nY8WjtcTYFwMAZln6gnlo3pcBP3N9cpEyxUHNhBAo5w1a2A4qxXvVgZhzOx4h65779A0VNITbfxZs6LJvIhuZD14UH3QoZNky8fHL+zvlbjiWsjV/aqvTcV8pvaPtHHfPleO6RuRLXdeq1CkWmBX1bF76mBvng6QgM1SiV2+/BH7s+jtoEDPDrIZqxFYZr56azu/bUV94RD5E5g9vIaOYHGglMGJ+jCPAp3ZzTnfMNxH2b3xnesCbClgMVqW8+ywG6uhsZCNo0oaE0AKY/jy/QrpVV5BtLCsa3qFaKTEX5ZRaTqXNgTv2EQ575QFgK7STflw8uVGOM3cnnKICqoO/bC6o9ozygxF6RzoFPIbGqvf72ri7iwz2mcYe2g3DG8VkJRL1SGoLEp6ocr0elacLhBC8tDS6i9Nt1Yn/xUETEAhz8szeP4Q0unpvzcguxWCD4LKkrI5ViPcrpGnCxaE0MsY8idxTGLADRPGYTPIHq3/3+VuyxJx+Uig7u610LdursbWRmhVGisnJaopDQteuScdPme4rfPm3ZXmD47Z84MjkisczsovixZFaNXAOKDQJNP6OIe81sSwIyVz24xc12qiezdmL3bVyed7ASaJGYp8ZntmUvC1dnw== nicho@sprouts";
+	    	String publicKeyPem = "MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA56vBpeKN4R836GaJF0MlVXbay6wpuyXo4WFc6lNoZ/G4xH4j+0tzTbs1xzfOap2sncc1LzumwMpLMDu8aExE/6qYzIZPlvPcgDMlko/NdXG+qI9vVLhfvdoPoCfbPtlH+i9hr8y8yMhck4KjxcFawzWm0LKyStnv9EAN5EnHYoyA2NqARVkj2eQ9fmPcnBoBZ0UcVaYSj/tftWIAr6Hm3tCGpjar3eAOl9i9QF4MrP8le/3Tq4kYmw+TEDaiK7DNttBzZ4owpGmxHaUF0CQcJexqVIUarYIjdL6Qj6J8tBJpiBReWHiU5E/yLzSWVgVjLiq8ipGF8EBJ/Abj/yBqA+TRDhifHEq4bCKsdK7xgx38zI2WP8+SFvj7yoWa8xN2P33luAyQXmH1ewFYZ5VRgNCMGEVB1G0ziuCzoiQ8LCl0ZL74/IXTGuYes5kj80IoE9LZ5Qaoz9+72mhtH3FmjgTCKot1b+MU1eZ6X/z4Hmb1AaxsUaH0zco5apIqiligLQDf/jDg0aU3I1rwlNWfYK4hOfFHnI1uEr7Gh3YwYYlU6uLoDCRtdxWwlZWsj4MxPRuQyuUq1J+qzpjPHJ7nvLwuq7kPDypg2xnEAYjMdiJFAIFREJn5cR5ax5ol6Pzuxy3jLqEh9hh7bOaua/YYuQEaM9wrcgk/lTE+EwNFlTcCAwEAAQ==";
 	        if (clientId == null) {
 	            throw new RuntimeException("Environment variables GOOGLE_ID and PRIVATE_RSA_KEY must be set");
 	        }
 	        
 	        privateKeyPem = privateKeyPem
-	                .replace("-----BEGIN PRIVATE KEY-----", "")
-	                .replace("-----END PRIVATE KEY-----", "")
 	                .replaceAll("\\s", "");
 	        System.out.println("Cleaned Private Key: " + privateKeyPem);
 	        byte[] privateKeyBytes = Base64.getDecoder().decode(privateKeyPem);
