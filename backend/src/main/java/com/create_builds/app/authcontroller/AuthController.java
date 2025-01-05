@@ -13,13 +13,11 @@ public class AuthController {
 
 	@PostMapping("/api/login")
 	public String authorizeLogin(@RequestBody String idToken) {
-		System.out.println("Received token: " + idToken);
 		Boolean isValid = JwtVerifier.verifyToken(idToken);
-        System.out.println("Is token valid? " + isValid);
         if(isValid)
-		return "Win?" + idToken;
+		return "Win? ( :> ) " + idToken;
         else
-        return "Lose):" + idToken;
+        return "Lose ( :< ) :" + idToken;
 	}
 	
     @GetMapping("/api/health/ping")

@@ -30,6 +30,22 @@ public class JwtVerifier {
     }
 
     public static Boolean verifyToken(String token) {
+    	
+    	// DEBUG LINES
+    	
+    	System.out.println("clientId: " + clientId);
+    	System.out.println("clientSecret: " + clientSecret);
+    	System.out.println("token: " + token);
+    	
+        if (token == null || token.length() <= 2) {
+            throw new IllegalArgumentException("Token is too short to strip characters");
+        }
+        String newToken = token.substring(1, token.length() - 1);
+    	
+    	System.out.println("token w/o first and last character: " + newToken);
+    	
+    	// CODE
+    	
         try {
             Algorithm algorithm = Algorithm.HMAC256(clientSecret);
             JWTVerifier verifier = JWT.require(algorithm)
