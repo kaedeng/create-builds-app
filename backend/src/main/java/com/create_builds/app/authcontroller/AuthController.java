@@ -18,13 +18,12 @@ import jakarta.servlet.http.HttpServletResponse;
 public class AuthController {
 
 	@Autowired
-	UserRepoService userRepoService;
+	JwtVerifier jwtVerifier;
 	
 	@PostMapping("/api/login")
 	public String authorizeLogin(@RequestBody String idToken, HttpServletResponse response) {
 		
-		JwtVerifier bruh = new JwtVerifier(userRepoService);
-		Boolean isValid = bruh.verifyToken(idToken, response);
+		Boolean isValid = jwtVerifier.verifyToken(idToken, response);
         if(isValid)
 		return "JWT Token Authorized";
         else
