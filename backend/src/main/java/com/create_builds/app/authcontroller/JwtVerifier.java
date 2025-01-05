@@ -5,6 +5,7 @@ import java.security.KeyFactory;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 import java.util.Date;
 
@@ -49,7 +50,7 @@ public class JwtVerifier {
 	        byte[] privateKeyBytes = Base64.getDecoder().decode(privateKeyPem);
 	        byte[] publicKeyBytes = Base64.getDecoder().decode(publicKeyPem);
 	        PKCS8EncodedKeySpec privSpec = new PKCS8EncodedKeySpec(privateKeyBytes);
-	        PKCS8EncodedKeySpec pubSpec = new PKCS8EncodedKeySpec(publicKeyBytes);
+	        X509EncodedKeySpec pubSpec = new X509EncodedKeySpec(publicKeyBytes);
 	        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
 	        privateKey = (RSAPrivateKey) keyFactory.generatePrivate(privSpec);
 	        publicMeKey = (RSAPublicKey) keyFactory.generatePublic(pubSpec);
