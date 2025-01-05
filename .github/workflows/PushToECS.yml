@@ -33,7 +33,7 @@ jobs:
       - name: Get Runner IP address
         id: ip
         uses: haythem/public-ip@v1.3
-  
+
       - name: Whitelist Runner IP
         env:
           AWS_INSTANCE_SG_ID: ${{ secrets.AWS_INSTANCE_SG_ID }}
@@ -56,6 +56,7 @@ jobs:
           GOOGLE_SECRET_ID: ${{ secrets.GOOGLE_SECRET_ID }}
           GH_CLIENT_ID: ${{ secrets.GH_CLIENT_ID }}
           GH_CLIENT_SECRET: ${{ secrets.GH_CLIENT_SECRET }}
+          PRIVATE_RSA_KEY: ${{ secrets.PRIVATE_RSA_KEY }}
         run: |
           docker build \
             --build-arg SPRING_DATASOURCE_URL=jdbc:postgresql://${PGADDR}/db \
