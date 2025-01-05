@@ -10,7 +10,7 @@ const LoginButton = () => {
   const handleCallbackResponse = async (response: any) => {
     const idToken: string = response.credential;
     console.log(idToken);
-    console.log(await loginUser(idToken));
+    console.log('Backend Response: ', await loginUser(idToken));
   };
 
   useEffect(() => {
