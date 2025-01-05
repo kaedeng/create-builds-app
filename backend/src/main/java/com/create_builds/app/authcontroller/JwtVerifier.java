@@ -6,12 +6,12 @@ import com.nimbusds.jose.crypto.RSASSAVerifier;
 import com.nimbusds.jwt.SignedJWT;
 import com.nimbusds.jwt.JWTClaimsSet;
 
+import java.io.*;
+import java.net.HttpURLConnection;
 import java.net.URL;
-import java.security.KeyFactory;
-import java.security.interfaces.RSAPublicKey;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
-import java.security.spec.X509EncodedKeySpec;
+import java.security.interfaces.RSAPublicKey;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +19,7 @@ import java.util.Map;
 public class JwtVerifier {
 
     private static final String GOOGLE_JWKS_URI = "https://www.googleapis.com/oauth2/v3/certs";
+    private static final String JWKS_CACHE_FILE = "jwks_cache.json";
 
     public static boolean verifyToken(String token) {
         try {
@@ -57,8 +58,7 @@ public class JwtVerifier {
                 return false;
             }
 
-            // Optionally, you can add more claim validations here (e.g., expiration, audience)
-
+            // Optionally, validate other claims (e.g., expiration, audience)
             System.out.println("Token is valid!");
             return true;
 
@@ -70,30 +70,84 @@ public class JwtVerifier {
     }
 
     private static RSAPublicKey getPublicKeyFromGoogleJwks(String keyId) throws Exception {
-        // Fetch the JWKS from Google's endpoint
-        URL url = new URL(GOOGLE_JWKS_URI);
-        Map<String, Object> jwks = new ObjectMapper().readValue(url, Map.class);
+        try {
+            // Fetch the JWKS from Google's endpoint
+            Map<String, Object> jwks = fetchJwksFromUrl(GOOGLE_JWKS_URI);
 
-        List<Map<String, Object>> keys = (List<Map<String, Object>>) jwks.get("keys");
-        if (keys == null) {
-            throw new IllegalArgumentException("No keys found in JWKS.");
+            List<Map<String, Object>> keys = (List<Map<String, Object>>) jwks.get("keys");
+            if (keys == null) {
+                throw new IllegalArgumentException("No keys found in JWKS.");
+            }
+
+            for (Map<String, Object> key : keys) {
+                if (keyId.equals(key.get("kid"))) {
+                    // Get the X.509 certificate chain
+                    List<String> x5cList = (List<String>) key.get("x5c");
+                    if (x5cList == null || x5cList.isEmpty()) {
+                        throw new IllegalArgumentException("x5c certificate chain is missing for keyId: " + keyId);
+                    }
+
+                    String x5c = x5cList.get(0);
+                    // Decode the certificate
+                    byte[] certBytes = Base64.getDecoder().decode(x5c);
+                    CertificateFactory certFactory = CertificateFactory.getInstance("X.509");
+                    X509Certificate certificate = (X509Certificate) certFactory.generateCertificate(new ByteArrayInputStream(certBytes));
+
+                    // Extract the public key from the certificate
+                    return (RSAPublicKey) certificate.getPublicKey();
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Failed to fetch JWKS from URL, attempting to load cached JWKS.");
+            return getPublicKeyFromCachedJwks(keyId);
         }
+
+        throw new IllegalArgumentException("Public key not found for keyId: " + keyId);
+    }
+
+    private static Map<String, Object> fetchJwksFromUrl(String jwksUrl) throws IOException {
+        URL url = new URL(jwksUrl);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setConnectTimeout(5000); // 5 seconds timeout
+        connection.setReadTimeout(5000);    // 5 seconds timeout
+
+        try (InputStream inputStream = connection.getInputStream()) {
+            // Save the JWKS to cache
+            saveJwksToCache(inputStream);
+            return new ObjectMapper().readValue(new File(JWKS_CACHE_FILE), Map.class);
+        }
+    }
+
+    private static void saveJwksToCache(InputStream jwksStream) throws IOException {
+        try (FileOutputStream fos = new FileOutputStream(JWKS_CACHE_FILE)) {
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+            while ((bytesRead = jwksStream.read(buffer)) != -1) {
+                fos.write(buffer, 0, bytesRead);
+            }
+        }
+    }
+
+    private static RSAPublicKey getPublicKeyFromCachedJwks(String keyId) throws Exception {
+        File cacheFile = new File(JWKS_CACHE_FILE);
+        if (!cacheFile.exists()) {
+            throw new IllegalStateException("JWKS cache not found.");
+        }
+
+        Map<String, Object> jwks = new ObjectMapper().readValue(cacheFile, Map.class);
+        List<Map<String, Object>> keys = (List<Map<String, Object>>) jwks.get("keys");
 
         for (Map<String, Object> key : keys) {
             if (keyId.equals(key.get("kid"))) {
-                // Get the X.509 certificate chain
                 List<String> x5cList = (List<String>) key.get("x5c");
                 if (x5cList == null || x5cList.isEmpty()) {
                     throw new IllegalArgumentException("x5c certificate chain is missing for keyId: " + keyId);
                 }
 
                 String x5c = x5cList.get(0);
-                // Decode the certificate
                 byte[] certBytes = Base64.getDecoder().decode(x5c);
                 CertificateFactory certFactory = CertificateFactory.getInstance("X.509");
-                X509Certificate certificate = (X509Certificate) certFactory.generateCertificate(new java.io.ByteArrayInputStream(certBytes));
-
-                // Extract the public key from the certificate
+                X509Certificate certificate = (X509Certificate) certFactory.generateCertificate(new ByteArrayInputStream(certBytes));
                 return (RSAPublicKey) certificate.getPublicKey();
             }
         }
