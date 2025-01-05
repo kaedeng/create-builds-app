@@ -15,7 +15,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 	            .authorizeHttpRequests(auth -> auth
 	            	.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 	            	.requestMatchers("/api/login").permitAll()
-	                .anyRequest().authenticated() 
+	                .anyRequest().permitAll() 
 	            )
 	            .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()))
 		        .csrf(csrf -> csrf.disable())
