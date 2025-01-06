@@ -14,6 +14,11 @@ public class UserRepoService extends RepoService<UserModel, Integer, UserModelRe
 		super();
         this.modelrepo = modelrepo;
 	}
+	
+	public UserModel getByGoogleId(String id) {
+		return modelrepo.getByGoogleId(id);
+	}
+	
 	@Override
 	public UserModel updateModel(UserModel model, Integer id) {
 		UserModel upd = getModelById(id);
