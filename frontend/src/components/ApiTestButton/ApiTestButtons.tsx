@@ -18,7 +18,7 @@ import {
 import PingApi from '../../api/pingApi';
 import LoginButton from '../LoginButton/LoginButton';
 import { logoutUser } from '../../api/auth';
-import { log } from 'console';
+
 export const ApiTestButtons = () => {
   const [buildId, setBuildId] = useState('');
   const [commentId, setCommentId] = useState('');
