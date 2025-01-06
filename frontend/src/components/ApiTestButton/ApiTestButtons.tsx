@@ -100,7 +100,8 @@ export const ApiTestButtons = () => {
 
   const testPutUser = async () => {
     try {
-      const result = await putUser(username);
+      const User = { username };
+      const result = await putUser(User);
       console.log('Put User Result:', result);
     } catch (error) {
       console.error('Error:', error);

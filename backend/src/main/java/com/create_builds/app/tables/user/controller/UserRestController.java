@@ -32,6 +32,10 @@ public class UserRestController {
     	modelrepo.delModel(id);
     }
     
+    public UserModel updateUser(UserModel userModel, Integer id) {
+    	return modelrepo.updateModel(userModel, id);
+    }
+    
     @GetMapping
     public ResponseEntity<UserModel> fetch(@CookieValue(name = "auth_token") String cookie) {
         try {
@@ -41,6 +45,18 @@ public class UserRestController {
             return ResponseEntity.ok(entity);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+    
+    @PutMapping
+    public ResponseEntity<UserModel> updateEntity(@CookieValue(name = "auth_token") String cookie, @RequestBody UserModel userModel) {
+        try {
+        	Integer id = cookieVerifier.CookieVerifierAndIntExtractor(cookie);
+        	if(id.equals(-1)) throw new RuntimeException("Invalid token or user ID failed");
+            UserModel entity = updateUser(userModel, id);
+            return ResponseEntity.ok(entity);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
     
