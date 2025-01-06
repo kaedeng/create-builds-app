@@ -55,6 +55,24 @@ public class BuildRestController {
         return ResponseEntity.ok(builds); // 200 OK with data
     }
     
+    @GetMapping("/profile/builds")
+    public ResponseEntity<List<BuildModel>> fetchUserProfileBuilds(@CookieValue(name = "auth_token", required = true) String authToken) {
+    	try {
+    		Integer user_id = cookieVerifier.CookieVerifierAndIntExtractor(authToken);
+        	if(user_id.equals(-1)) throw new RuntimeException("Invalid token or user ID failed");
+        	
+        	List<BuildModel> builds = modelrepo.findBuildsFromUserId(user_id);
+        	
+        	if(builds.isEmpty()) {
+        		return ResponseEntity.noContent().build();
+        	}
+        	return ResponseEntity.ok(builds);
+    	} catch (Exception e) {
+        	e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+    
     @PostMapping("/builds")
     public ResponseEntity<BuildModel> postBuild(@CookieValue(name = "auth_token", required = true) String authToken, @RequestBody BuildModel model) {
     	try {
@@ -93,8 +111,23 @@ public class BuildRestController {
     }
     
     @DeleteMapping("/builds/{id}")
-    public void deleteBuild(@PathVariable Integer id) {
-    	modelrepo.delModel(id);
+    public ResponseEntity<String> deleteBuild(@CookieValue(name = "auth_token", required = true) String authToken, @PathVariable Integer id) {
+    	try {
+    		Integer user_id = cookieVerifier.CookieVerifierAndIntExtractor(authToken);
+        	if(user_id.equals(-1)) throw new RuntimeException("Invalid token or user ID failed");
+        	
+        	BuildModel currentModel = modelrepo.getModelById(id);
+        	
+        	if(!(currentModel.getUser_id()).equals(user_id)) throw new RuntimeException("Build's owner doesn't match");
+     
+        	modelrepo.delModel(id);
+        	
+        	return ResponseEntity.ok("Build Deleted");
+    	} catch (Exception e) {
+        	e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    	
     }
     
 }
