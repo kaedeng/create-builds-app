@@ -59,7 +59,7 @@ public class CookieVerifier {
 			Algorithm algorithm = Algorithm.RSA256(publicKey, null);
 			
 			JWTVerifier verifier = JWT.require(algorithm)
-					.withIssuer("https://createbuilsmc.com")
+					.withIssuer("https://createbuildsmc.com")
 					.withAudience(clientId)
 					.build();
 			DecodedJWT decodedJWT = verifier.verify(cookie);
