@@ -18,6 +18,7 @@ import {
 import PingApi from '../../api/pingApi';
 import LoginButton from '../LoginButton/LoginButton';
 import { logoutUser } from '../../api/auth';
+import { log } from 'console';
 export const ApiTestButtons = () => {
   const [buildId, setBuildId] = useState('');
   const [commentId, setCommentId] = useState('');
@@ -192,12 +193,13 @@ export const ApiTestButtons = () => {
     }
   };
 
-  const testLogout = () => {
-    return (
-      <div>
-        <button onClick={logoutUser}>Logout</button>
-      </div>
-    );
+  const testLogout = async () => {
+    try {
+      await logoutUser();
+      console.log('Logged Out');
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
 
   return (

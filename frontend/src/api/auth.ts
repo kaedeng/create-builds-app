@@ -12,8 +12,7 @@ export const loginUser = async (idToken: string): Promise<string> => {
 
 export const logoutUser = async (): Promise<void> => {
   try {
-    const response = await axiosInstance.get('/logout');
-    //return response.data;
+    await axiosInstance.get('/logout');
   } catch (error) {
     console.error('Error:', error);
     throw error;
