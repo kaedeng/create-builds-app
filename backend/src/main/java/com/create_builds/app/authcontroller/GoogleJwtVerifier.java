@@ -26,14 +26,14 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 
 @Service
-public class JwtVerifier {
+public class GoogleJwtVerifier {
 	
 	private UserRepoService userRepo;
     private static String clientId;
     private static RSAPrivateKey privateKey;
     private static RSAPublicKey publicMeKey;
     
-    public JwtVerifier(UserRepoService userRepo) {
+    public GoogleJwtVerifier(UserRepoService userRepo) {
         try {
         	this.userRepo = userRepo;
             clientId = System.getenv("GOOGLE_ID");
@@ -44,7 +44,6 @@ public class JwtVerifier {
                 throw new RuntimeException("Environment variables GOOGLE_ID and PRIVATE_RSA_KEY must be set");
             }
 
-            privateKeyPem = privateKeyPem.replaceAll("\\s", "");
             byte[] privateKeyBytes = Base64.getDecoder().decode(privateKeyPem);
             byte[] publicKeyBytes = Base64.getDecoder().decode(publicKeyPem);
 

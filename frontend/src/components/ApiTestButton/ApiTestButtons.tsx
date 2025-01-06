@@ -6,7 +6,7 @@ import {
   putComment,
   deleteComment,
 } from '../../api/commentApi';
-import { getUser, putUser } from '../../api/userApi';
+import { getUser, putUser, deleteUser } from '../../api/userApi';
 import {
   getTopBuilds,
   getBuild,
@@ -182,6 +182,15 @@ export const ApiTestButtons = () => {
     }
   };
 
+  const testDeleteUser = async () => {
+    try {
+      const result = await deleteUser();
+      console.log('Delete User Result:', result);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
   // const testLoginUser = () => {
   //   loginUser();
   // };
@@ -250,6 +259,7 @@ export const ApiTestButtons = () => {
       <button onClick={testPutBuild}>Test Put Build</button>
       <button onClick={testDeleteBuild}>Test Delete Build</button>
       <button onClick={testPing}>Ping</button>
+      <button onClick={testDeleteUser}>Delete User</button>
     </div>
   );
 };

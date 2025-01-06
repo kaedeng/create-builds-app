@@ -19,3 +19,13 @@ export const putUser = async (username: string): Promise<string> => {
     throw error;
   }
 };
+
+export const deleteUser = async (): Promise<string> => {
+  try {
+    const response = await axiosInstance.delete('/profile');
+    return response.data;
+  } catch (error) {
+    console.error('Error:', error);
+    throw error;
+  }
+};

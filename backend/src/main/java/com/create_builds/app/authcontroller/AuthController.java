@@ -18,7 +18,7 @@ import jakarta.servlet.http.HttpServletResponse;
 public class AuthController {
 
 	@Autowired
-	JwtVerifier jwtVerifier;
+	GoogleJwtVerifier jwtVerifier;
 	
 	@PostMapping("/api/login")
 	public String authorizeLogin(@RequestBody String idToken, HttpServletResponse response) {
