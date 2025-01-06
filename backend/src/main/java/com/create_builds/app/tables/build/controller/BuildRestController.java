@@ -79,8 +79,10 @@ public class BuildRestController {
     		Integer user_id = cookieVerifier.CookieVerifierAndIntExtractor(authToken);
         	if(user_id.equals(-1)) throw new RuntimeException("Invalid token or user ID failed");
         	
-        	if(!model.getUser_id().equals(user_id))
+        	BuildModel currentModel = modelrepo.getModelById(id);
         	
+        	if(!(currentModel.getUser_id()).equals(user_id)) throw new RuntimeException("Build's owner doesn't match");
+     
         	BuildModel updatedModel = modelrepo.updateModel(model, id);
         	
         	return ResponseEntity.ok(updatedModel);
