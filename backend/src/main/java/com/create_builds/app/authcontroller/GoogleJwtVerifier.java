@@ -78,7 +78,7 @@ public class GoogleJwtVerifier {
             if(userRepo.getByGoogleId(decodedJWT.getSubject()) == null) {
             	UserModel newModel = new UserModel();
             	newModel.setGoogle_id(decodedJWT.getSubject());
-            	newModel.setUsername(decodedJWT.getClaim("preferred_username").asString());
+            	newModel.setUsername(decodedJWT.getClaim("name").asString());
             	userRepo.saveModel(newModel);
             }
             

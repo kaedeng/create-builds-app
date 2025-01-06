@@ -1,6 +1,10 @@
 package com.create_builds.app.authcontroller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,6 +32,18 @@ public class AuthController {
 		return "JWT Token Authorized";
         else
         return "JWT Token could not be verified";
+	}
+	
+	@GetMapping("/api/logout")
+	public ResponseEntity<Void> Logout(@CookieValue(name = "auth_token", required = true) String authToken) {
+		ResponseCookie cookie = ResponseCookie.from("auth_token", "")
+				.path("/")
+				.maxAge(0)
+				.build();
+		
+		return ResponseEntity.ok()
+					.header(HttpHeaders.SET_COOKIE, cookie.toString())
+					.build();
 	}
 	
     @GetMapping("/api/health/ping")
