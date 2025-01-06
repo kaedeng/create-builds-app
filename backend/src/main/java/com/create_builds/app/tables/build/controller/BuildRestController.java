@@ -3,6 +3,7 @@ package com.create_builds.app.tables.build.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.create_builds.app.authcontroller.CookieVerifier;
 import com.create_builds.app.tables.build.model.BuildModel;
 import com.create_builds.app.tables.build.modelservice.BuildRepoService;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,6 +29,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class BuildRestController {
 	@Autowired
 	BuildRepoService modelrepo;
+	
+	@Autowired
+	CookieVerifier cookieVerifier;
     
     public List<BuildModel> getAllBuilds() {
 		return null;
@@ -51,13 +56,38 @@ public class BuildRestController {
     }
     
     @PostMapping("/builds")
-    public BuildModel postBuild(@RequestBody BuildModel model) {
-        return modelrepo.saveModel(model);
+    public ResponseEntity<BuildModel> postBuild(@CookieValue(name = "auth_token", required = true) String authToken, @RequestBody BuildModel model) {
+    	try {
+    		Integer user_id = cookieVerifier.CookieVerifierAndIntExtractor(authToken);
+        	if(user_id.equals(-1)) throw new RuntimeException("Invalid token or user ID failed");
+        	
+        	model.setUser_id(user_id);
+        	model.setUpvotes(1);
+        	
+        	BuildModel savedModel = modelrepo.saveModel(model);
+        	
+        	return ResponseEntity.ok(savedModel);
+    	} catch (Exception e) {
+        	e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
     
     @PutMapping("/builds/{id}")
-    public BuildModel putBuild(@PathVariable Integer id, @RequestBody BuildModel model) {
-    	return modelrepo.updateModel(model, id);
+    public ResponseEntity<BuildModel> putBuild(@CookieValue(name = "auth_token", required = true) String authToken, @PathVariable Integer id, @RequestBody BuildModel model) {
+    	try {
+    		Integer user_id = cookieVerifier.CookieVerifierAndIntExtractor(authToken);
+        	if(user_id.equals(-1)) throw new RuntimeException("Invalid token or user ID failed");
+        	
+        	if(!model.getUser_id().equals(user_id))
+        	
+        	BuildModel updatedModel = modelrepo.updateModel(model, id);
+        	
+        	return ResponseEntity.ok(updatedModel);
+    	} catch (Exception e) {
+        	e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
     
     @DeleteMapping("/builds/{id}")

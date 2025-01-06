@@ -9,7 +9,6 @@ const clientId =
 const LoginButton = () => {
   const handleCallbackResponse = async (response: any) => {
     const idToken: string = response.credential;
-    console.log(idToken);
     const result = await loginUser(idToken);
     console.log('Backend Response: ', result);
   };

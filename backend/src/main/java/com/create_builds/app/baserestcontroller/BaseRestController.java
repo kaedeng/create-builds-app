@@ -14,11 +14,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import com.create_builds.app.authcontroller.CookieVerifier;
 import com.create_builds.app.reposervice.RepoService;
 
 // Base class for all rest controllers. Each individual controller will have their own request mapping.
 public abstract class BaseRestController<T, ID, R extends CrudRepository<T, ID>, S extends RepoService<T, ID, R>> {
 	// DI for the required service.
+	
     @Autowired
     protected S modelrepo;
 
