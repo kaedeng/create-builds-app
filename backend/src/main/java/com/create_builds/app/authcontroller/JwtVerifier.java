@@ -83,7 +83,7 @@ public class JwtVerifier {
             	userRepo.saveModel(newModel);
             }
             
-            algorithm = Algorithm.RSA256(publicMeKey, privateKey);
+            algorithm = Algorithm.RSA256(null, privateKey);
             String userJwt = JWT.create()
                     .withIssuer("https://createbuildsmc.com/")
                     .withSubject(userRepo.getByGoogleId(decodedJWT.getSubject()).getId().toString())
