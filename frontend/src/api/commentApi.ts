@@ -7,6 +7,10 @@ type Comment = {
   content: string;
 };
 
+type CommentCreation = {
+  content: string;
+};
+
 export const getComments = async (build_id: number): Promise<Comment[]> => {
   try {
     const response = await axiosInstance.get(`/builds/${build_id}/comments`);
@@ -19,12 +23,12 @@ export const getComments = async (build_id: number): Promise<Comment[]> => {
 
 export const postComment = async (
   build_id: number,
-  content: string
+  comment: CommentCreation
 ): Promise<Comment> => {
   try {
     const response = await axiosInstance.post(
       `/builds/${build_id}/comments`,
-      content
+      comment
     );
     return response.data;
   } catch (error) {
@@ -36,12 +40,12 @@ export const postComment = async (
 export const putComment = async (
   id: number,
   build_id: number,
-  content: string
+  comment: CommentCreation
 ): Promise<Comment> => {
   try {
     const response = await axiosInstance.put(
       `/builds/${build_id}/comments/${id}`,
-      content
+      comment
     );
     return response.data;
   } catch (error) {
