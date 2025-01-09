@@ -46,14 +46,12 @@ public class CommentRestController{
     }
 
     @PostMapping
-    public ResponseEntity<CommentModel> postComment(@CookieValue(name = "auth_token", required = true) String authToken, @PathVariable("buildId") Integer buildId, @RequestBody String content){
+    public ResponseEntity<CommentModel> postComment(@CookieValue(name = "auth_token", required = true) String authToken, @PathVariable("buildId") Integer buildId, @RequestBody CommentModel commentModel){
         try {
             Integer user_id = cookieVerifier.CookieVerifierAndIntExtractor(authToken);
             if(user_id.equals(-1)) throw new RuntimeException("Invalid token or user ID failed");
 
-            CommentModel commentModel = new CommentModel();
             commentModel.setBuild_id(buildId);
-            commentModel.setContent(content);
             commentModel.setUser_id(user_id);
 
             modelrepo.saveModel(commentModel);
@@ -66,21 +64,21 @@ public class CommentRestController{
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CommentModel> putComment(@CookieValue(name = "auth_token", required = true) String authToken, @PathVariable("buildId") Integer buildId, @PathVariable Integer id, @RequestBody String content){
+    public ResponseEntity<CommentModel> putComment(@CookieValue(name = "auth_token", required = true) String authToken, @PathVariable("buildId") Integer buildId, @PathVariable Integer id, @RequestBody CommentModel commentModel){
         try {
             Integer user_id = cookieVerifier.CookieVerifierAndIntExtractor(authToken);
             if(user_id.equals(-1)) throw new RuntimeException("Invalid token or user ID failed");
 
-            CommentModel commentModel = modelrepo.getModelById(id);
+            CommentModel savedModel = modelrepo.getModelById(id);
 
-            if(!(commentModel.getUser_id()).equals(user_id)) throw new RuntimeException("Build's owner doesn't match");
-            if(!(commentModel.getBuild_id()).equals(buildId)) throw new RuntimeException("Build's id doesn't match");
+            if(!(savedModel.getUser_id()).equals(user_id)) throw new RuntimeException("Build's owner doesn't match");
+            if(!(savedModel.getBuild_id()).equals(buildId)) throw new RuntimeException("Build's id doesn't match");
 
-            commentModel.setContent(content);
+            savedModel.setContent(commentModel.getContent());
 
-            modelrepo.updateModel(commentModel, id);
+            modelrepo.updateModel(savedModel, id);
 
-            return ResponseEntity.ok(commentModel);
+            return ResponseEntity.ok(savedModel);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
