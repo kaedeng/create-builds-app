@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.create_builds.app.authcontroller.CookieVerifier;
 import com.create_builds.app.tables.build.model.BuildModel;
+import com.create_builds.app.tables.build.modelservice.BuildRepoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,25 +20,13 @@ import com.create_builds.app.tables.comment.repo.CommentModelRepo;
 @RequestMapping("/api/builds/{buildId}/comments")
 @CrossOrigin(origins = "https://createbuildsmc.com",
 			 allowCredentials = "true")
-public class CommentRestController extends BaseRestController<
-	CommentModel, 
-	Integer, 
-	CommentModelRepo, 
-	CommentRepoService>
-	{
-	public CommentRestController(CommentRepoService service) {
-        super();
-        this.modelrepo=service;
-    }
+public class CommentRestController{
+
+    @Autowired
+    CommentRepoService modelrepo;
 
     @Autowired
     CookieVerifier cookieVerifier;
-
-	// nullifying bad protocol
-	@Override
-	protected List<CommentModel> getAll() {
-        return null;
-    }
 	
     public List<CommentModel> getComments(Integer buildId) {
         return modelrepo.findCommentsByBuildId(buildId);
