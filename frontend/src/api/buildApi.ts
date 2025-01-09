@@ -14,8 +14,6 @@ type BuildDetails = {
 type BuildCreationDetails = {
   title: string;
   description: string;
-  img_links: string[];
-  nbt: string;
 };
 
 export const getTopBuilds = async (): Promise<BuildDetails[]> => {
@@ -49,10 +47,27 @@ export const getUsersBuilds = async (): Promise<BuildDetails[]> => {
 };
 
 export const postBuild = async (
-  newBuild: BuildCreationDetails
+  newBuild: BuildCreationDetails,
+  images: File[],
+  nbtFile: File
 ): Promise<BuildDetails> => {
   try {
-    const response = await axiosInstance.post('/builds', newBuild);
+    const formData = new FormData();
+
+    formData.append(
+      'build',
+      new Blob([JSON.stringify(newBuild)], { type: 'application/json' })
+    );
+
+    images.forEach((image) => {
+      formData.append('images', image);
+    });
+
+    formData.append('nbtFile', nbtFile);
+
+    const response = await axiosInstance.post('/builds', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
     return response.data;
   } catch (error) {
     console.error('Error:', error);

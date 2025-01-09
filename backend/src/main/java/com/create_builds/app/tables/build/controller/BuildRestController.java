@@ -1,5 +1,6 @@
 package com.create_builds.app.tables.build.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.create_builds.app.tables.upvotes.model.UpvoteModel;
@@ -7,22 +8,14 @@ import com.create_builds.app.tables.upvotes.modelservice.UpvoteRepoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.create_builds.app.tables.upvotes.controller.UpvoteRestController;
 import com.create_builds.app.authcontroller.CookieVerifier;
 import com.create_builds.app.tables.build.model.BuildModel;
 import com.create_builds.app.tables.build.modelservice.BuildRepoService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-
+import com.create_builds.app.service.S3Service;
+import org.springframework.web.multipart.MultipartFile;
 
 
 @RestController
@@ -38,6 +31,9 @@ public class BuildRestController {
 	
 	@Autowired
 	CookieVerifier cookieVerifier;
+
+	@Autowired
+	S3Service s3Service;
     
     public List<BuildModel> getAllBuilds() {
 		return null;
@@ -80,7 +76,7 @@ public class BuildRestController {
     }
     
     @PostMapping("/builds")
-    public ResponseEntity<BuildModel> postBuild(@CookieValue(name = "auth_token", required = true) String authToken, @RequestBody BuildModel model) {
+    public ResponseEntity<BuildModel> postBuild(@CookieValue(name = "auth_token", required = true) String authToken, @RequestPart("build") BuildModel model, @RequestPart("images")List<MultipartFile> images, @RequestPart("nbtFile") MultipartFile nbtFile) {
     	try {
     		Integer user_id = cookieVerifier.CookieVerifierAndIntExtractor(authToken);
         	if(user_id.equals(-1)) throw new RuntimeException("Invalid token or user ID failed");
@@ -90,11 +86,22 @@ public class BuildRestController {
         	
         	BuildModel savedModel = modelrepo.saveModel(model);
 
-			UpvoteModel toPost = new UpvoteModel();
+			ArrayList<String> imageUrls = new ArrayList<>();
+			for(MultipartFile image : images){
+				String imageUrl = s3Service.uploadFile(image, "builds/" + savedModel.getId() + "/images/");
+				imageUrls.add(imageUrl);
+			}
 
+			String nbtUrl = s3Service.uploadFile(nbtFile, "builds/" + savedModel.getId() + "/nbt/");
+
+			savedModel.setImg_links(imageUrls.toArray(new String[0]));
+			savedModel.setNbt(nbtUrl);
+			modelrepo.updateModel(savedModel, savedModel.getId());
+
+			//Adding Owner Upvote
+			UpvoteModel toPost = new UpvoteModel();
 			toPost.setUser_id(user_id);
 			toPost.setBuild_id(savedModel.getId());
-
 			upvotemodelrepo.saveModel(toPost);
         	
         	return ResponseEntity.ok(savedModel);

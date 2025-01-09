@@ -36,8 +36,8 @@ jobs:
       - name: Setup Maven and JDK
         uses: actions/setup-java@v2
         with:
-          java-version: '17'
-          distribution: 'adopt'
+          java-version: "17"
+          distribution: "adopt"
 
       - name: Build and Run Tests
         env:
@@ -46,8 +46,10 @@ jobs:
           PGPASS: mypassword
           GOOGLE_ID: ${{ secrets.GOOGLE_ID }}
           GOOGLE_SECRET_ID: ${{ secrets.GOOGLE_SECRET_ID }}
+          AMAZON_ID: ${{ secrets.AMAZON_ID }}
+          AMAZON_SECRET_ID: ${{ secrets.AMAZON_SECRET_ID }}
           GH_CLIENT_ID: ${{ secrets.GH_CLIENT_ID }}
-          GH_CLIENT_SECRET: ${{ secrets.GH_CLIENT_SECRET }} 
+          GH_CLIENT_SECRET: ${{ secrets.GH_CLIENT_SECRET }}
         run: |
           cd backend
           mvn --batch-mode -DskipTests package
@@ -57,6 +59,6 @@ jobs:
         uses: mikepenz/action-junit-report@v5
         if: success() || failure()
         with:
-          report_paths: '**/target/surefire-reports/TEST-*.xml'
+          report_paths: "**/target/surefire-reports/TEST-*.xml"
           include_passed: true
           github_token: ${{ secrets.GITHUB_TOKEN }}

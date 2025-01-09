@@ -26,7 +26,6 @@ export const postComment = async (
   comment: CommentCreation
 ): Promise<Comment> => {
   try {
-    console.log('Sending payload:', comment);
     const response = await axiosInstance.post(
       `/builds/${build_id}/comments`,
       comment

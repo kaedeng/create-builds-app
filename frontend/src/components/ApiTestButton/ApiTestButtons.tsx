@@ -26,8 +26,8 @@ export const ApiTestButtons = () => {
   const [content, setContent] = useState('');
   const [buildTitle, setBuildTitle] = useState('');
   const [buildDescription, setBuildDescription] = useState('');
-  const [buildImgLinks, setBuildImgLinks] = useState('');
-  const [buildNBT, setBuildNBT] = useState('');
+  const [buildImgFiles, setBuildImgFiles] = useState<File[]>([]);
+  const [buildNBTFile, setBuildNBTFile] = useState<File | null>(null);
 
   const parseArray = (input: string) =>
     input.split(',').map((item) => item.trim());
@@ -138,15 +138,30 @@ export const ApiTestButtons = () => {
     }
   };
 
+  const handleImgFilesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setBuildImgFiles(Array.from(e.target.files));
+    }
+  };
+
+  const handleNBTFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setBuildNBTFile(e.target.files[0]);
+    }
+  };
+
   const testPostBuild = async () => {
     try {
+      if (!buildNBTFile) {
+        throw new Error('NBT file is required');
+      }
+
       const newBuild = {
         title: buildTitle,
         description: buildDescription,
-        img_links: parseArray(buildImgLinks),
-        nbt: buildNBT,
       };
-      const result = await postBuild(newBuild);
+
+      const result = await postBuild(newBuild, buildImgFiles, buildNBTFile);
       console.log('Post Build Result:', result);
     } catch (error) {
       console.error('Error:', error);
@@ -158,8 +173,6 @@ export const ApiTestButtons = () => {
       const updatedBuild = {
         title: buildTitle,
         description: buildDescription,
-        img_links: parseArray(buildImgLinks),
-        nbt: buildNBT,
       };
       const result = await putBuild(Number(buildId), updatedBuild);
       console.log('Put Build Result:', result);
@@ -242,16 +255,13 @@ export const ApiTestButtons = () => {
           value={buildDescription}
           onChange={(e) => setBuildDescription(e.target.value)}
         />
-        <textarea
-          placeholder="Build Image Links (comma-separated)"
-          value={buildImgLinks}
-          onChange={(e) => setBuildImgLinks(e.target.value)}
+        <input
+          type="file"
+          multiple
+          accept="image/*"
+          onChange={handleImgFilesChange}
         />
-        <textarea
-          placeholder="Build NBT"
-          value={buildNBT}
-          onChange={(e) => setBuildNBT(e.target.value)}
-        />
+        <input type="file" accept=".nbt" onChange={handleNBTFileChange} />
       </div>
       <button onClick={testPostUpvote}>Test Post Upvote</button>
       <button onClick={testDeleteUpvote}>Test Delete Upvote</button>
