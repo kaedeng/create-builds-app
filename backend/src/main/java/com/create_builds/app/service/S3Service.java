@@ -27,6 +27,9 @@ public class S3Service {
             throw new IllegalStateException("AWS credentials are not set in the environment variables.");
         }
 
+        System.out.println("Access Key ID: " + accessKeyId);
+        System.out.println("Secret Access Key: " + (secretAccessKey != null ? "******" : "null"));
+
         this.s3 = S3Client.builder()
                 .region(Region.US_WEST_2) // Hardcoded region
                 .credentialsProvider(StaticCredentialsProvider.create(
