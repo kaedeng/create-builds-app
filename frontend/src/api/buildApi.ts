@@ -66,7 +66,7 @@ export const postBuild = async (
     formData.append('nbtFile', nbtFile);
 
     const response = await axiosInstance.post('/builds', formData, {
-      headers: { 'Content-Type': 'multipart/form-data' },
+      headers: {},
     });
     return response.data;
   } catch (error) {
@@ -96,7 +96,7 @@ export const putBuild = async (
     formData.append('nbtFile', nbtFile);
 
     const response = await axiosInstance.put(`/builds/${id}`, formData, {
-      headers: { 'Content-Type': 'multipart/form-data' },
+      headers: {},
     });
     return response.data;
   } catch (error) {
