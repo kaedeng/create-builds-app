@@ -94,8 +94,8 @@ public class BuildRestController {
 				count++;
 			}
 
-			String nbtFileName = savedModel.getTitle() + ".nbt";
-			String nbtUrl = s3Service.uploadFile(nbtFile, "builds/" + savedModel.getId() + "/nbt/", nbtFileName);
+			String fixedTitle = model.getTitle().replaceAll("[^a-zA-Z0-9-_\\.]", "_");
+			String nbtUrl = s3Service.uploadFile(nbtFile, "builds/" + model.getId() + "/nbt/", fixedTitle + ".nbt");
 
 			savedModel.setImg_links(imageUrls.toArray(new String[0]));
 			savedModel.setNbt(nbtUrl);
@@ -141,10 +141,8 @@ public class BuildRestController {
 			}
 
 			if (nbtFile != null) {
-				if (!nbtFile.getOriginalFilename().endsWith(".zip")) {
-					throw new RuntimeException("NBT file must be a ZIP file.");
-				}
-				String nbtUrl = s3Service.uploadFile(nbtFile, "builds/" + id + "/nbt/", model.getTitle() + ".zip");
+				String fixedTitle = model.getTitle().replaceAll("[^a-zA-Z0-9-_\\.]", "_");
+				String nbtUrl = s3Service.uploadFile(nbtFile, "builds/" + id + "/nbt/", fixedTitle + ".nbt");
 				currentModel.setNbt(nbtUrl);
 			}
 
