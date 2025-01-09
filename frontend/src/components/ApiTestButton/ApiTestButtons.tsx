@@ -29,8 +29,8 @@ export const ApiTestButtons = () => {
   const [buildImgFiles, setBuildImgFiles] = useState<File[]>([]);
   const [buildNBTFile, setBuildNBTFile] = useState<File | null>(null);
 
-  const parseArray = (input: string) =>
-    input.split(',').map((item) => item.trim());
+  //const parseArray = (input: string) =>
+  //  input.split(',').map((item) => item.trim());
 
   const testPostUpvote = async () => {
     try {
