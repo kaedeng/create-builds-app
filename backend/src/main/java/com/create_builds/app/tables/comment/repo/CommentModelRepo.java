@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CommentModelRepo extends JpaRepository<CommentModel, Integer>{
 	@Query("SELECT c FROM CommentModel c WHERE c.build_id = :buildId")
-	public List<CommentModel> findCommentsByBuildId(Integer id);
+	public List<CommentModel> findCommentsByBuildId(Integer buildId);
 }

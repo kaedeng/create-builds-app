@@ -46,7 +46,7 @@ public class CommentRestController{
     }
 
     @PostMapping
-    public ResponseEntity<CommentModel> postComment(@CookieValue(name = "auth_token", required = true) String authToken, @PathVariable("buildId") Integer buildId, String content){
+    public ResponseEntity<CommentModel> postComment(@CookieValue(name = "auth_token", required = true) String authToken, @PathVariable("buildId") Integer buildId, @RequestBody String content){
         try {
             Integer user_id = cookieVerifier.CookieVerifierAndIntExtractor(authToken);
             if(user_id.equals(-1)) throw new RuntimeException("Invalid token or user ID failed");
@@ -66,7 +66,7 @@ public class CommentRestController{
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CommentModel> putComment(@CookieValue(name = "auth_token", required = true) String authToken, @PathVariable("buildId") Integer buildId, @PathVariable Integer id, String content){
+    public ResponseEntity<CommentModel> putComment(@CookieValue(name = "auth_token", required = true) String authToken, @PathVariable("buildId") Integer buildId, @PathVariable Integer id, @RequestBody String content){
         try {
             Integer user_id = cookieVerifier.CookieVerifierAndIntExtractor(authToken);
             if(user_id.equals(-1)) throw new RuntimeException("Invalid token or user ID failed");
