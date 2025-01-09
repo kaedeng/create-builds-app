@@ -6,6 +6,6 @@
 	import org.springframework.stereotype.Repository;
 	@Repository
 	public interface UpvoteModelRepo extends JpaRepository<UpvoteModel, Integer>{
-		@Query("SELECT c FROM UpvoteModel c WHERE c.build_id = :buildId")
-		public UpvoteModel findUpvoteByBuildId(Integer buildId);
+		@Query("SELECT c FROM UpvoteModel c WHERE c.build_id = :buildId AND c.user_id = :userId")
+		public UpvoteModel findUpvoteByBuildAndUser(Integer buildId, Integer userId);
 	}

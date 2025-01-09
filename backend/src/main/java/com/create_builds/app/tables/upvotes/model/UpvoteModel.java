@@ -23,6 +23,4 @@ public class UpvoteModel {
 	private Integer build_id;
 	@Column(name="user_id")
 	private Integer user_id;
-	@Column(name="upvote_count")
-	private Integer upvote_count;
 }

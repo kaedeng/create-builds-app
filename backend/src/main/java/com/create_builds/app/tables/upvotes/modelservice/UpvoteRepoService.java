@@ -24,13 +24,10 @@ public class UpvoteRepoService extends RepoService<UpvoteModel, Integer, UpvoteM
         if (model.getUser_id() != null) {
             upd.setUser_id(model.getUser_id());
         }
-        if (model.getUpvote_count() != null) {
-            upd.setUpvote_count(model.getUpvote_count());
-        }
 		return modelrepo.save(upd);
 	}
 
-	public UpvoteModel getUpvoteByBuildId(Integer buildId) {
-		return modelrepo.findUpvoteByBuildId(buildId);
+	public UpvoteModel getUpvoteByBuildAndUser(Integer buildId, Integer userId) {
+		return modelrepo.findUpvoteByBuildAndUser(buildId, userId);
 	}
 }
