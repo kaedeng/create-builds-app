@@ -24,7 +24,7 @@ import com.create_builds.app.tables.upvotes.repo.UpvoteModelRepo;
 public class UpvoteRestController{
 
 	@Autowired
-	BuildRepoService buildmodelrepo;
+	private BuildRepoService buildmodelrepo;
 
 	@Autowired
 	UpvoteRepoService modelrepo;

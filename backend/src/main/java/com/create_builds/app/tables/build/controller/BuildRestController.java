@@ -2,6 +2,8 @@ package com.create_builds.app.tables.build.controller;
 
 import java.util.List;
 
+import com.create_builds.app.tables.upvotes.model.UpvoteModel;
+import com.create_builds.app.tables.upvotes.modelservice.UpvoteRepoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.create_builds.app.tables.upvotes.controller.UpvoteRestController;
 import com.create_builds.app.authcontroller.CookieVerifier;
 import com.create_builds.app.tables.build.model.BuildModel;
 import com.create_builds.app.tables.build.modelservice.BuildRepoService;
@@ -29,6 +32,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class BuildRestController {
 	@Autowired
 	BuildRepoService modelrepo;
+
+	@Autowired
+	private UpvoteRepoService upvotemodelrepo;
 	
 	@Autowired
 	CookieVerifier cookieVerifier;
@@ -83,6 +89,13 @@ public class BuildRestController {
         	model.setUpvotes(1);
         	
         	BuildModel savedModel = modelrepo.saveModel(model);
+
+			UpvoteModel toPost = new UpvoteModel();
+
+			toPost.setUser_id(user_id);
+			toPost.setBuild_id(savedModel.getId());
+
+			upvotemodelrepo.saveModel(toPost);
         	
         	return ResponseEntity.ok(savedModel);
     	} catch (Exception e) {
