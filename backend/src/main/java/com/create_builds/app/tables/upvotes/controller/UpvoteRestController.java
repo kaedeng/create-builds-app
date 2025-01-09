@@ -3,6 +3,7 @@ package com.create_builds.app.tables.upvotes.controller;
 import java.util.List;
 
 import com.create_builds.app.authcontroller.CookieVerifier;
+import com.create_builds.app.reposervice.RepoService;
 import com.create_builds.app.tables.build.model.BuildModel;
 import com.create_builds.app.tables.build.modelservice.BuildRepoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,43 +21,16 @@ import com.create_builds.app.tables.upvotes.repo.UpvoteModelRepo;
 @RequestMapping("/api/{buildId}/upvote")
 @CrossOrigin(origins = "https://createbuildsmc.com",
 			 allowCredentials = "true")
-public class UpvoteRestController extends BaseRestController<
-        UpvoteModel, 
-        Integer, 
-        UpvoteModelRepo, 
-        UpvoteRepoService> {
-
-    public UpvoteRestController(UpvoteRepoService service) {
-        super();
-        this.modelrepo=service;
-    }
+public class UpvoteRestController{
 
 	@Autowired
 	BuildRepoService buildmodelrepo;
 
 	@Autowired
-	CookieVerifier cookieVerifier;
+	UpvoteRepoService modelrepo;
 
-	// nullifying bad protocol
- 	@Override
- 	protected List<UpvoteModel> getAll() {
-         return null;
-    }
- 	// nullifying bad protocol
- 	@Override
- 	protected UpvoteModel update(Integer id, UpvoteModel model) {
-         return null;
-     }
- 	// nullifying bad protocol
-  	@Override
- 	protected UpvoteModel getById(Integer id) {
-        return null;
-    }
-  	// nullifying bad protocol
-  	@Override
-  	protected void delete(Integer id) {
-  		return;
-  	}
+	@Autowired
+	CookieVerifier cookieVerifier;
   	
   	public void deleteByBuildId(Integer buildId, Integer userId) {
   	    UpvoteModel toDel = modelrepo.getUpvoteByBuildAndUser(buildId, userId);
