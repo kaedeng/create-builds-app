@@ -36,6 +36,9 @@ public class CommentRestController{
     public ResponseEntity<List<CommentModel>> fetchByBuildId(@PathVariable("buildId") Integer buildId) {
         try {
             List<CommentModel> entity = getComments(buildId);
+
+            if(entity.isEmpty()) return ResponseEntity.noContent().build();
+
             return ResponseEntity.ok(entity);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
