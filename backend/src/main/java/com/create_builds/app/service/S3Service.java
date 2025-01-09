@@ -27,9 +27,6 @@ public class S3Service {
             throw new IllegalStateException("AWS credentials are not set in the environment variables.");
         }
 
-        System.out.println("Access Key ID: " + accessKeyId);
-        System.out.println("Secret Access Key: " + (secretAccessKey != null ? "******" : "null"));
-
         this.s3 = S3Client.builder()
                 .region(Region.US_WEST_2) // Hardcoded region
                 .credentialsProvider(StaticCredentialsProvider.create(
@@ -37,13 +34,13 @@ public class S3Service {
                 .build();
     }
 
-    public String uploadFile(MultipartFile file, String keyPrefix) {
+    public String uploadFile(MultipartFile file, String keyPrefix, String fileName) {
         try {
 
             Path tempFile = Files.createTempFile("upload-", file.getOriginalFilename());
             Files.copy(file.getInputStream(), tempFile, StandardCopyOption.REPLACE_EXISTING);
 
-            String s3Key = keyPrefix + file.getOriginalFilename();
+            String s3Key = keyPrefix + fileName;
 
             PutObjectRequest putObjectRequest = PutObjectRequest.builder()
                     .bucket(bucketName)

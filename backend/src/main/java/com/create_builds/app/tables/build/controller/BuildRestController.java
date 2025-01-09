@@ -87,12 +87,15 @@ public class BuildRestController {
         	BuildModel savedModel = modelrepo.saveModel(model);
 
 			ArrayList<String> imageUrls = new ArrayList<>();
+			int count = 1;
 			for(MultipartFile image : images){
-				String imageUrl = s3Service.uploadFile(image, "builds/" + savedModel.getId() + "/images/");
+				String imageUrl = s3Service.uploadFile(image, "builds/" + savedModel.getId() + "/images/", count + ".jpg");
 				imageUrls.add(imageUrl);
+				count++;
 			}
 
-			String nbtUrl = s3Service.uploadFile(nbtFile, "builds/" + savedModel.getId() + "/nbt/");
+			String nbtFileName = savedModel.getTitle() + ".nbt";
+			String nbtUrl = s3Service.uploadFile(nbtFile, "builds/" + savedModel.getId() + "/nbt/", nbtFileName);
 
 			savedModel.setImg_links(imageUrls.toArray(new String[0]));
 			savedModel.setNbt(nbtUrl);
@@ -112,7 +115,9 @@ public class BuildRestController {
     }
     
     @PutMapping("/builds/{id}")
-    public ResponseEntity<BuildModel> putBuild(@CookieValue(name = "auth_token", required = true) String authToken, @PathVariable Integer id, @RequestBody BuildModel model) {
+    public ResponseEntity<BuildModel> putBuild(@CookieValue(name = "auth_token", required = true) String authToken, @PathVariable Integer id,
+											   @RequestBody BuildModel model, @RequestPart(value = "images", required = false) List<MultipartFile> images,
+											   @RequestPart(value = "nbtFile", required = false) MultipartFile nbtFile) {
     	try {
     		Integer user_id = cookieVerifier.CookieVerifierAndIntExtractor(authToken);
         	if(user_id.equals(-1)) throw new RuntimeException("Invalid token or user ID failed");
@@ -121,9 +126,31 @@ public class BuildRestController {
         	
         	if(!(currentModel.getUser_id()).equals(user_id)) throw new RuntimeException("Build's owner doesn't match");
      
-        	BuildModel updatedModel = modelrepo.updateModel(model, id);
+        	currentModel.setTitle(model.getTitle());
+			currentModel.setDescription(model.getDescription());
+
+			if (images != null && !images.isEmpty()) {
+				ArrayList<String> imageUrls = new ArrayList<>();
+				int count = 1;
+				for (MultipartFile image : images) {
+					String imageUrl = s3Service.uploadFile(image, "builds/" + id + "/images/", count + ".jpg");
+					imageUrls.add(imageUrl);
+					count++;
+				}
+				currentModel.setImg_links(imageUrls.toArray(new String[0]));
+			}
+
+			if (nbtFile != null) {
+				if (!nbtFile.getOriginalFilename().endsWith(".zip")) {
+					throw new RuntimeException("NBT file must be a ZIP file.");
+				}
+				String nbtUrl = s3Service.uploadFile(nbtFile, "builds/" + id + "/nbt/", model.getTitle() + ".zip");
+				currentModel.setNbt(nbtUrl);
+			}
+
+			modelrepo.updateModel(currentModel, id);
         	
-        	return ResponseEntity.ok(updatedModel);
+        	return ResponseEntity.ok(currentModel);
     	} catch (Exception e) {
         	e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

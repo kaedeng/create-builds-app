@@ -77,10 +77,27 @@ export const postBuild = async (
 
 export const putBuild = async (
   id: number,
-  updatedBuild: BuildCreationDetails
+  updatedBuild: BuildCreationDetails,
+  images: File[],
+  nbtFile: File
 ): Promise<BuildDetails> => {
   try {
-    const response = await axiosInstance.put(`/builds/${id}`, updatedBuild);
+    const formData = new FormData();
+
+    formData.append(
+      'build',
+      new Blob([JSON.stringify(updatedBuild)], { type: 'application/json' })
+    );
+
+    images.forEach((image) => {
+      formData.append('images', image);
+    });
+
+    formData.append('nbtFile', nbtFile);
+
+    const response = await axiosInstance.put(`/builds/${id}`, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
     return response.data;
   } catch (error) {
     console.error('Error:', error);

@@ -170,11 +170,20 @@ export const ApiTestButtons = () => {
 
   const testPutBuild = async () => {
     try {
+      if (!buildNBTFile) {
+        throw new Error('NBT file is required');
+      }
+
       const updatedBuild = {
         title: buildTitle,
         description: buildDescription,
       };
-      const result = await putBuild(Number(buildId), updatedBuild);
+      const result = await putBuild(
+        Number(buildId),
+        updatedBuild,
+        buildImgFiles,
+        buildNBTFile
+      );
       console.log('Put Build Result:', result);
     } catch (error) {
       console.error('Error:', error);
