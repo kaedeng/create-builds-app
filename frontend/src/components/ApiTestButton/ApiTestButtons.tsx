@@ -23,7 +23,7 @@ export const ApiTestButtons = () => {
   const [buildId, setBuildId] = useState('');
   const [commentId, setCommentId] = useState('');
   const [username, setUsername] = useState('');
-  const [commentContent, setCommentContent] = useState('');
+  const [content, setContent] = useState('');
   const [buildTitle, setBuildTitle] = useState('');
   const [buildDescription, setBuildDescription] = useState('');
   const [buildImgLinks, setBuildImgLinks] = useState('');
@@ -61,7 +61,8 @@ export const ApiTestButtons = () => {
 
   const testPostComment = async () => {
     try {
-      const result = await postComment(Number(buildId), commentContent);
+      const comment = { content };
+      const result = await postComment(Number(buildId), comment);
       console.log('Post Comment Result:', result);
     } catch (error) {
       console.error('Error:', error);
@@ -70,10 +71,11 @@ export const ApiTestButtons = () => {
 
   const testPutComment = async () => {
     try {
+      const comment = { content };
       const result = await putComment(
         Number(commentId),
         Number(buildId),
-        commentContent
+        comment
       );
       console.log('Put Comment Result:', result);
     } catch (error) {
@@ -226,8 +228,8 @@ export const ApiTestButtons = () => {
         />
         <textarea
           placeholder="Comment Content"
-          value={commentContent}
-          onChange={(e) => setCommentContent(e.target.value)}
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
         />
         <input
           type="text"
