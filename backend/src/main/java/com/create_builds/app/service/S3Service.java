@@ -6,12 +6,13 @@ import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
-import software.amazon.awssdk.services.s3.model.PutObjectRequest;
+import software.amazon.awssdk.services.s3.model.*;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 
 @Service
 public class S3Service {
@@ -55,6 +56,24 @@ public class S3Service {
 
         } catch (IOException e) {
             throw new RuntimeException("Failed to upload file to S3", e);
+        }
+    }
+
+    public void deleteFilesInFolder(String folderKey) {
+        ListObjectsV2Request listObjectsRequest = ListObjectsV2Request.builder()
+                .bucket(bucketName)
+                .prefix(folderKey)
+                .build();
+
+        ListObjectsV2Response listObjectsResponse = s3.listObjectsV2(listObjectsRequest);
+        List<S3Object> objects = listObjectsResponse.contents();
+
+        for (S3Object object : objects) {
+            String key = object.key();
+            s3.deleteObject(DeleteObjectRequest.builder()
+                    .bucket(bucketName)
+                    .key(key)
+                    .build());
         }
     }
 }

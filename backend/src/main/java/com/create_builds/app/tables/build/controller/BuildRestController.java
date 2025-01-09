@@ -130,6 +130,9 @@ public class BuildRestController {
 			currentModel.setDescription(model.getDescription());
 
 			if (images != null && !images.isEmpty()) {
+
+				s3Service.deleteFilesInFolder("builds/" + id + "/images/");
+
 				ArrayList<String> imageUrls = new ArrayList<>();
 				int count = 1;
 				for (MultipartFile image : images) {
@@ -141,6 +144,9 @@ public class BuildRestController {
 			}
 
 			if (nbtFile != null) {
+
+				s3Service.deleteFilesInFolder("builds/" + id + "/nbt/");
+
 				String fixedTitle = model.getTitle().replaceAll("[^a-zA-Z0-9-_\\.]", "_");
 				String nbtUrl = s3Service.uploadFile(nbtFile, "builds/" + id + "/nbt/", fixedTitle + ".nbt");
 				currentModel.setNbt(nbtUrl);
