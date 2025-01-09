@@ -18,7 +18,7 @@ import com.create_builds.app.tables.upvotes.modelservice.UpvoteRepoService;
 import com.create_builds.app.tables.upvotes.repo.UpvoteModelRepo;
 
 @RestController
-@RequestMapping("/api/{buildId}/upvote")
+@RequestMapping("/api/builds/{buildId}/upvote")
 @CrossOrigin(origins = "https://createbuildsmc.com",
 			 allowCredentials = "true")
 public class UpvoteRestController{
