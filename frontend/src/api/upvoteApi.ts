@@ -10,6 +10,7 @@ export const postUpvote = async (build_id: number): Promise<string> => {
   }
 };
 
+
 export const deleteUpvote = async (build_id: number): Promise<string> => {
   try {
     const response = await axiosInstance.delete(`/builds/${build_id}/upvote`);
