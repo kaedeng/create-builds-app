@@ -22,9 +22,10 @@ export const postComment = async (
   content: string
 ): Promise<Comment> => {
   try {
-    const response = await axiosInstance.post(`/builds/${build_id}/comments`, {
-      content,
-    });
+    const response = await axiosInstance.post(
+      `/builds/${build_id}/comments`,
+      content
+    );
     return response.data;
   } catch (error) {
     console.error('Error:', error);
@@ -40,7 +41,7 @@ export const putComment = async (
   try {
     const response = await axiosInstance.put(
       `/builds/${build_id}/comments/${id}`,
-      { content }
+      content
     );
     return response.data;
   } catch (error) {
